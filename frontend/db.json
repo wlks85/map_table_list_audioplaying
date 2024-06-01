@@ -1,0 +1,49 @@
+{
+    "words": [
+      {
+        "id": "1",
+        "word": "apple",
+        "location": "USA",
+        "longitude": -100.0,
+        "latitude": 40.0,
+        "metadata": {
+          "population": 1000,
+          "region": "North America",
+          "otherInfo": "Grown in Washington"
+        }
+      },
+      {
+        "id": "2",
+        "word": "banana",
+        "location": "Ecuador",
+        "longitude": -78.5,
+        "latitude": -1.5,
+        "metadata": {
+          "population": 500,
+          "region": "South America",
+          "otherInfo": "Exported globally"
+        }
+      }
+    ],
+    "variants": [
+      {
+        "id": "101",
+        "wordId": "1",
+        "variant": "red apple",
+        "audioId": "a1"
+      },
+      {
+        "id": "102",
+        "wordId": "1",
+        "variant": "green apple",
+        "audioId": "a2"
+      },
+      {
+        "id": "103",
+        "wordId": "2",
+        "variant": "ripe banana",
+        "audioId": "a3"
+      }
+    ]
+  }
+  
