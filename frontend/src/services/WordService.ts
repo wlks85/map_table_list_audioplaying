@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = 'http://192.168.50.93:8082/api/v1';
+const host: string = 'localhost';
+const BASE_URL = `http://${host}:8082/api/v1`;
 export const WordService = {
     async getWords() {
         const {status, data} = await axios.get(`${BASE_URL}/words`);

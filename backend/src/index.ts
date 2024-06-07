@@ -6,7 +6,7 @@ import WordsRouter from './router/WordsRouter';
 import cors from 'cors';
 
 
-mongoose.connect("mongodb://192.168.50.93/wordmap")
+mongoose.connect("mongodb://host.docker.internal:27017/wordmap")
 
 const upController = new UploadController();
 
