@@ -5,8 +5,9 @@ import { asyncHandler, globalErrorHandler } from './middlewares';
 import WordsRouter from './router/WordsRouter';
 import cors from 'cors';
 
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://host.docker.internal:27017/wordmap';
 
-mongoose.connect("mongodb://host.docker.internal:27017/wordmap")
+mongoose.connect(MONGO_URL)
 
 const upController = new UploadController();
 

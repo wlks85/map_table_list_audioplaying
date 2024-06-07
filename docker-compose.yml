@@ -13,6 +13,8 @@ services:
     tty: true
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - VITE_API_ROOT=${API_ROOT}
+      - VITE_NODE_ENV=${NODE_ENV}
     volumes:
       - './frontend:/app'
       # - '/app/node_modules'
@@ -33,6 +35,7 @@ services:
     # command: "bash"
     environment:
       - PORT=8000
+      - MONGO_URL=${MONGO_URL}
     volumes:
       - './backend:/app'
       # - '/app/node_modules'

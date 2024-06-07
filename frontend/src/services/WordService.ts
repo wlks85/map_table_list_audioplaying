@@ -1,6 +1,9 @@
 import axios from "axios";
-const host: string = '192.168.0.104';
-const BASE_URL = `http://${host}:8082/api/v1`;
+const env = import.meta.env;
+const host: string = env.VITE_API_ROOT || "localhost";
+const port: string = env.VITE_NODE_ENV === 'local' ? ":8082": "";
+const scheme: string = env.VITE_NODE_ENV === 'local' ? 'http' : 'https';
+const BASE_URL = `${scheme}://${host}${port}/api/v1`;
 export const WordService = {
     async getWords() {
         const {status, data} = await axios.get(`${BASE_URL}/words`);
