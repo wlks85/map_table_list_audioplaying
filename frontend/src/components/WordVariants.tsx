@@ -83,7 +83,7 @@ const WordVariants: React.FC = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const playAudio = (variant: Variant | ILocation)=> {
-    const audio = new Audio(variant?.pronounciation || `https://dictionary.cambridge.org/media/english/uk_pron/u/ukh/ukhol/ukholdu027.mp3`);
+    const audio = new Audio(variant?.pronounciation || `${window.location.origin}/ukholdu027.mp3`);
     audio.play();
   }
 
