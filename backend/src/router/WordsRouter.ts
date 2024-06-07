@@ -2,12 +2,13 @@ import { Request, Response, Router } from "express";
 import { DependencyManger } from "../lib";
 import { WordController } from "../controllers/WordController";
 import { Pagination } from "../dto";
+import { asyncHandler } from "../middlewares";
 
 const wordController: WordController = DependencyManger.getController('WordController');
 
 const WordsRouter: Router = Router();
 
-WordsRouter.get("/", async (req: Request, res: Response) => {
+WordsRouter.get("/", asyncHandler(async (req: Request, res: Response) => {
     let {limit, offset}: any = req.query;
     if(!limit) {
         limit = 10;
@@ -17,9 +18,9 @@ WordsRouter.get("/", async (req: Request, res: Response) => {
     }
     const response = await wordController.getWords({limit, offset});
     res.json(response);
-});
+}));
 
-WordsRouter.get("/:word", async (req: Request, res: Response) => {
+WordsRouter.get("/:word", asyncHandler(async (req: Request, res: Response) => {
     let {limit, offset}: any = req.query;
     const word = req.params.word;
     if(!limit) {
@@ -30,7 +31,7 @@ WordsRouter.get("/:word", async (req: Request, res: Response) => {
     }
     const response = await wordController.getWord(word, []);
     res.json(response);
-});
+}));
 
 WordsRouter.get("/:word/variants", async (req: Request, res: Response) => {
     let {limit, offset}: any = req.query;

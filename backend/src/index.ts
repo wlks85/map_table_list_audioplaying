@@ -32,6 +32,16 @@ app.get("/", (_, res) => res.json("Hello from api..."));
  */
 app.use("/api/v1/words", WordsRouter)
 
+app.use("/import/meta", async (req,res)=> {
+  await upController.processMetaFile();
+  res.json({hello: "meta imported."})
+});
+app.use("/import/:word", (req, res)=> {
+  const title = req.params.word;
+  upController.importWord(title);
+  res.json({message: "Word imported."});
+});
+
 
 
 app.use(globalErrorHandler);
