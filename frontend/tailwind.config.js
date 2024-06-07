@@ -8,7 +8,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#801A86",
+        // primary: "#801A86",
+        primary: "#866ec7",
         bluishgray: "#3C4F76",
         lavendar: "#DDDBF1",
         charcoal: "#383F51",
@@ -19,6 +20,7 @@ export default {
         ultraviolet: "#645986",
         tearose: "#FAC8CD",
         thistle: "#D7BCC8",
+        location: "rgba(0, 0, 0, 0.02)",
       },
     },
   },

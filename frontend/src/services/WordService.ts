@@ -1,5 +1,5 @@
 import axios from "axios";
-const host: string = 'localhost';
+const host: string = '192.168.0.104';
 const BASE_URL = `http://${host}:8082/api/v1`;
 export const WordService = {
     async getWords() {
