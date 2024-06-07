@@ -99,7 +99,7 @@ const WordVariants: React.FC = () => {
                   <div><WordAvatar 
                     width={50} 
                     height={50}
-                    hasAction={false}
+                    onClick={()=> playAudio(variant)}
                      />
                     </div>
                   <span className='text-2xl capitalize cursor-pointer'>{variant.title}</span> 
@@ -139,7 +139,7 @@ const LocationsList: React.FC<{ variant: Variant, title: string }> = ({ variant,
       {locations.map(location => (
         <li key={location._id} className="border-b bg-location text-right">
           <div className="flex gap-5 p-4">
-            <WordAvatar height={80} width={80} />
+            <WordAvatar height={80} width={80} hasAction={false} />
             <div>
               <div className='text-black text-2xl'>{location.place}</div>
             </div>

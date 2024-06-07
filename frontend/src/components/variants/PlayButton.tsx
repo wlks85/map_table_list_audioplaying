@@ -3,10 +3,11 @@ import { BaseProps } from '../types';
 interface IPlayButton extends BaseProps {
     width: number;
     height: number;
+    onClick: Function;
 }
 
-const PlayButton: React.FC<IPlayButton> = ({width=50,height=50,...rest})=> (
-    <div {...rest} style={{width: `${width}px`, height: `${height}px,`}} {...rest} >
+const PlayButton: React.FC<IPlayButton> = ({width=50,height=50,onClick,...rest})=> (
+    <div {...rest} onClick={()=> onClick()} style={{width: `${width}px`, height: `${height}px,`, cursor: "pointer"}} >
       <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
         <g>
           <path d="M45.563,29.174l-22-15c-0.307-0.208-0.703-0.231-1.031-0.058C22.205,14.289,22,14.629,22,15v30
