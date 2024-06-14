@@ -44,11 +44,9 @@ const WordList: React.FC = () => {
 
   return (
     <div className=" p-4">
-      
       <div className="grid grid-cols-1 gap-4">
         {words.map(word=> <WordItem key={word._id} word={word} />)}
       </div>
-      
     </div>
   );
 };

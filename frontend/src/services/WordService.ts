@@ -1,11 +1,12 @@
 import axios from "axios";
 const env = import.meta.env;
-const host: string = env.VITE_API_ROOT || "localhost";
-const port: string = env.VITE_NODE_ENV === 'local' ? ":8082": "";
-const scheme: string = env.VITE_NODE_ENV === 'local' ? 'http' : 'https';
+const host: string = "192.168.0.109";//env.VITE_API_ROOT || "192.168.0.109";
+const port: string = ":8082";//env.VITE_NODE_ENV === 'local' ? ":8082": "";
+const scheme: string = env.VITE_NODE_ENV === 'local' ? 'http' : 'http';
 const BASE_URL = `${scheme}://${host}${port}/api/v1`;
 export const WordService = {
     async getWords() {
+        alert(BASE_URL);
         const {status, data} = await axios.get(`${BASE_URL}/words`);
         if(status === 200) return data;
         else throw new Error("Could not fetch data")

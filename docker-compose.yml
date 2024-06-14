@@ -42,10 +42,7 @@ services:
     restart: always
     networks:
       - my-network
-      - common_network
 
 networks:
   my-network:
     driver: bridge
-  common_network:
-    external: true
