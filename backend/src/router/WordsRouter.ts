@@ -9,15 +9,7 @@ const wordController: WordController = DependencyManger.getController('WordContr
 const WordsRouter: Router = Router();
 
 WordsRouter.get("/", asyncHandler(async (req: Request, res: Response) => {
-    let {limit, offset}: any = req.query;
-    if(!limit) {
-        limit = 10;
-    }
-    if(!offset) {
-        offset = 0;
-    }
-    const response = await wordController.getWords({limit, offset});
-    res.json(response);
+    
 }));
 
 WordsRouter.get("/:word", asyncHandler(async (req: Request, res: Response) => {

@@ -86,7 +86,7 @@ const WordVariants: React.FC = () => {
     const audio = new Audio(variant?.pronounciation || `${window.location.origin}/ukholdu027.mp3`);
     audio.play();
   }
-
+console.log(word)
   return word && (
     <div className="flex flex-col h-screen mb-32">
       {word && <StickyNavbar word={word} />}

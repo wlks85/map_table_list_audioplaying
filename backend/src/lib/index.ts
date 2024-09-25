@@ -6,19 +6,18 @@ import { WordService } from "../services/WordService";
 const wordService = new WordService();
 
 //controllers
-const wordController = new WordController(wordService,);
+const wordController = new WordController(wordService);
 
 const DEP_STORE = {
-    controllers: {
-        'WordController': wordController,
-    }
+  controllers: {
+    WordController: wordController,
+  },
 };
 
-
 export const DependencyManger = {
-    getController(key: string) {
-        const p: any = DEP_STORE.controllers[key];
-        if(!p) throw new Error('Unknown singleton expected');
-        return p;
-    }
+  getController(key: string) {
+    const p: any = DEP_STORE.controllers[key];
+    if (!p) throw new Error("Unknown singleton expected");
+    return p;
+  },
 };

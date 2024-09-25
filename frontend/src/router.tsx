@@ -9,6 +9,7 @@ import WordVariants from "./components/WordVariants";
 import Layout
  from "./components/Layout";
 import HomePage from "./pages/Home";
+import PageTitle from "./components/PageTitle";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
         {
             path: "/word/:wordId",
             element: <WordVariants />,
+        },
+        {
+            path: "/page/:pagenumber",
+            element: <PageTitle />,
         },
     ]
   },

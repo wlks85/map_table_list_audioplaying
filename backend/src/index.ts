@@ -4,10 +4,8 @@ import { globalErrorHandler } from "./middlewares";
 
 const port = process.env.PORT || 8000;
 
-
 app.use(globalErrorHandler);
 
-http.createServer(app)
-.listen(port, function() {
+http.createServer(app).listen(port, function () {
   console.log(`Server is running on port ${port}`);
 });
