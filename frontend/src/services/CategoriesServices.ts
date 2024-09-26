@@ -1,11 +1,9 @@
 import axios from "axios";
 const env = import.meta.env;
-const host: string = env.VITE_API_ROOT || "176.10.111.19";
-const port: string = env.VITE_NODE_ENV || ":8001";
+const host: string = env.VITE_API_ROOT || "audio.dialektatlas.ch";
+const port: string = env.VITE_NODE_ENV || "";
 const scheme: string ="https";
 const BASE_URL = `${scheme}://${host}${port}/api/v1`;
-
-console.log("===>", BASE_URL);
 
 export const CategoriesServices = {
     async getCategories() {

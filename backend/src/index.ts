@@ -2,7 +2,7 @@ import app from "./app";
 import http from "http";
 import { globalErrorHandler } from "./middlewares";
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8001;
 
 app.use(globalErrorHandler);
 
