@@ -1,9 +1,11 @@
 import axios from "axios";
 const env = import.meta.env;
 const host: string = env.VITE_API_ROOT || "176.10.111.19";
-const port: string = env.VITE_NODE_ENV === "local" ? ":8001" : "";
-const scheme: string = env.VITE_NODE_ENV === "local" ? "http" : "https";
+const port: string = env.VITE_NODE_ENV || ":8001";
+const scheme: string ="https";
 const BASE_URL = `${scheme}://${host}${port}/api/v1`;
+
+console.log("===>", BASE_URL);
 
 export const CategoriesServices = {
     async getCategories() {
