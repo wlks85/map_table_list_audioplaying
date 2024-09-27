@@ -1,5 +1,4 @@
 
-import WordList from '../components/WordList';
 import CategoriesList from '../components/CategoriesList';
 
 const HomePage = () => {
@@ -16,7 +15,7 @@ const HomePage = () => {
             </div>
           
             <div className='flex-1'>
-                <WordList />
+                {/* <WordList /> */}
             </div>
         </div>
     );

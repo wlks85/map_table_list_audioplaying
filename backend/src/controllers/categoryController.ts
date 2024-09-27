@@ -1,64 +1,36 @@
 import { Request, Response } from 'express';
-import csv from 'csv-parser';
-import fs from 'fs';
-import path from 'path';
+import { csvToJson } from '../utils/csvToJson';
+import categoryModel from '../model/categoryModel';
 
-interface Category {
-    category: string;
-    subcategory: string;
-}
 
-interface GroupedData {
-    [key: string]: string[];
-}
-
-let categories: Category[] = [];
-
-let groupedData: GroupedData = {};
-
-// Read the CSV File Data 
-const readCSV = () => {
-    const results: Category[] = [];
-    fs.createReadStream(path.join(__dirname, "../parser", 'categories_data.csv'))
-        .pipe(csv())
-        .on('data', (data) => {
-            results.push({
-                category: data.Maincategory,
-                subcategory: data.Subcategory
-            });
-        })
-        .on('end', () => {
-            categories = results;
-        })
+export const uploadCategoryCsv = async (req: Request, res: Response) => {
+    try {
+        const records = await csvToJson(req.file.path);
+        // console.log(records);
+        await categoryModel.insertMany(records);
+        res.status(201).json({ message: 'Records uploaded successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
-readCSV();
-
-// Reduce Json
-// const reduceJSON = () =>{
-//     const jsonData: categoriesController[] =categoriesController;
-//     groupedData = jsonData.reduce((acc, item) => {
-//         if (item.category) {
-//             console.log(item.category)
-//             if (!acc[item.category]) {
-//                 acc[item.category] = [];
-//             }
-//             acc[item.category].push(item.subcategory);
-//         }
-//         return acc;
-//     }, {} as GroupedData);
-// }
-// reduceJSON();
-
-// Controller function to get data
-export const categoryController = async (req: Request, res: Response) => {
-    if (categories.length === 0) {
-        try {
-            await readCSV();
-        } catch (error) {
-            console.error("Error reading CSV:", error);
-            return res.status(500).json({ error: "Internal Server Error" });
-        }
+export const getCategories = async (req: Request, res: Response) => {
+    try {
+        // console.log('records')
+        const categories = await categoryModel.find().sort({ Maincategory: 1 });;
+        res.status(200).json(categories);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    res.json(categories);
+};
+
+export const getSubcategories = async (req: Request, res: Response) => {
+    try {
+        // console.log('records')
+        const category = req.params.category;
+        const categories = await categoryModel.find({Maincategory: category}).sort({ Subcategory: 1 });
+        res.status(200).json(categories);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };

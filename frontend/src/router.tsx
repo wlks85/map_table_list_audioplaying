@@ -19,10 +19,10 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />
         }, 
-        {
-            path: "/word/:wordId",
-            element: <WordVariants />,
-        },
+        // {
+        //     path: "/word/:wordId",
+        //     element: <WordVariants />,
+        // },
         {
             path: "/page/:pagenumber",
             element: <PageTitle />,

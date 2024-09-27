@@ -1,90 +1,86 @@
 import { useEffect, useState } from "react";
 import { CategoriesServices } from "../services/CategoriesServices";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useNavigate } from "react-router-dom";
 
-
-interface categories {
-    category: string;
-    subcategory: string;
-    pagetitle: string;
-    pagenumber: number;
+interface Categories {
+    Maincategory: string;
+    Subcategory: string;
+    Pagetitle: string;
+    Pagenumber: number;
 }
 
+interface SubCategoriesListProps {
+    selectedCategory: string;
+}
 
-
-const SubCategoriesList: React.FC = ({ selectedCategory }) => {
-    const [categories, setCategories] = useState<categories[]>([]);
-    const [subcategory, setSubcategory] = useState<categories[]>([]);
-    // console.log(selectedCategory)
-
-    useEffect(() => {
-        CategoriesServices.getSubCategories()
-            .then((data) => {
-                // console.log("works", data);
-                setCategories(data);
-            })
-            .catch(() => alert("Error fetching"));
-    }, []);
-
+const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory }) => {
+    const [categories, setCategories] = useState<Categories[]>([]);
+    const [subcategory, setSubcategory] = useState<string>('Genuss');
 
     const navigate = useNavigate();
 
-    // Function to filter data by category
-    const filterByCategory = (category: string): categories[] => {
-        return categories.filter(item => item.category === category);
+    useEffect(() => {
+        CategoriesServices.getSubCategories(selectedCategory)
+            .then((data) => {
+                setCategories(data);
+                // console.log(data)
+            })
+            .catch(() => alert("Error fetching"));
+    }, [selectedCategory]);
+
+    const handleButtonClick = (subcategory: string) => {
+
+        setSubcategory(subcategory);
+        // console.log(activeIndex, index)
     };
 
+    // const filterByCategory = (category: string): Categories[] => {
+    //     return categories.filter(item => item.Maincategory === category);
+    // };
 
-    const selectedData = filterByCategory(selectedCategory);
-
-    // console.log(subcategory)
-    const uniqueData = Array.from(new Map(selectedData.map(item => [item.subcategory, item])).values())
-    // console.log(uniqueData)
-    const uniquePageTitle = selectedData?.filter(item => item.subcategory === subcategory);
-
-    // console.log(uniquePageTitle)
+    // const selectedData = filterByCategory(selectedCategory);
+    const uniqueData = Array.from(new Map(categories.map(item => [item.Subcategory, item])).values());
+    const uniquePageTitle = categories.filter(item => item.Subcategory === subcategory);
+    uniquePageTitle.sort((a, b) => a.Pagetitle.localeCompare(b.Pagetitle));
 
     return (
-        <div className="my-2 mx-1">
-
-            <div>
+        <div >
+            <div className="bg-gray-200 py-4 px-2 mt-14">
                 <Swiper
                     slidesPerView={3}
                     spaceBetween={10}
-                    className="mySwiper"
+                    className="mySwiper "
                 >
-                    {
-                        uniqueData?.map((button, index) => (
-                            <SwiperSlide key={index}>
-                                <div className="text-center bg-gray-600 text-white font-bold py-2 px-4 rounded-xl" onClick={() => { setSubcategory(button.subcategory) }} >
-                                    {button.subcategory}
-                                </div>
-                            </SwiperSlide>
-                        ))
-                    }
-
+                    {uniqueData.map((button, index) => (
+                        <SwiperSlide key={index}>
+                            <div
+                                className={`text-center hover:bg-gray-500  font-bold py-2 px-2 rounded-3xl cursor-pointer ${subcategory === button.Subcategory ? 'bg-gray-600 text-white' : 'bg-gray-400 text-black'} `}
+                                onClick={() => handleButtonClick(button.Subcategory)}
+                            >
+                                {button.Subcategory}
+                            </div>
+                        </SwiperSlide>
+                    ))}
                 </Swiper>
             </div>
 
-            {
-                uniquePageTitle?.map((pageTitle, index) => (
-                    <div className="flex items-center justify-between font-bold py-4 px-3 m-2 border-b-2 shadow-sm" key={index} onClick={() => { navigate(`/page/${pageTitle?.pagenumber}`); }}>
-                        <span>{pageTitle?.pagetitle}</span>
-                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </div>
-                ))
-            }
-
+            {uniquePageTitle.map((pageTitle, index) => (
+                <div
+                    className="flex items-center justify-between text-xl font-extrabold py-4 px-3 m-2 border-b-2 shadow-sm cursor-pointer"
+                    key={index}
+                    onClick={() => navigate(`/page/${pageTitle?.Pagenumber}`)}
+                >
+                    <span className="font-extrabold">{pageTitle.Pagetitle}</span>
+                    <svg className="w-4 h-4 ml-2 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+            ))}
         </div>
-    )
-}
+    );
+};
 
-export default SubCategoriesList
+export default SubCategoriesList;
