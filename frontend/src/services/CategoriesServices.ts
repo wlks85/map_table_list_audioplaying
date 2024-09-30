@@ -2,7 +2,7 @@ import axios from "axios";
 const env = import.meta.env;
 const host: string = env.VITE_API_ROOT || "audio.dialektatlas.ch";
 // const port: string = env.VITE_NODE_ENV === "local" ? ":8000" : "";
-const port = "8001";
+const port = ":8001";
 // const scheme: string = env.VITE_NODE_ENV === "local" ? "http" : "https";
 const scheme = "https";
 const BASE_URL = `${scheme}://${host}${port}/api/v1`;
