@@ -5,6 +5,7 @@ import { CategoriesServices } from "../services/CategoriesServices";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory, getColor, setCategory, submitColor } from "../redux/themeSlice";
+import { SlugService } from "../services/SlugService";
 
 const colors: string[] = [
     'magenta', '#ffdd62', '#e21327', '#71cff1', '#f78551', '#02998a', 'blue', 'purple', 'pink', 'brown'
@@ -13,16 +14,15 @@ const colors: string[] = [
 const CategoriesList: React.FC = () => {
     const dispatch = useDispatch<any>();
     const navigate = useNavigate();
-    const params = useParams();
     const data = useSelector((state: any) => state.theme);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<string>('Grammatik');
     const [uniqueData, setUniqueData] = useState<any[]>([])
-    console.log(params.slug)
 
     useEffect(() => {
         dispatch(getColor());
         dispatch(getCategory());
+        
         CategoriesServices.getCategories()
             .then((data) => {
                 setUniqueData(Array.from(new Map(data.map((item: any) => [item.Maincategory, item])).values()))

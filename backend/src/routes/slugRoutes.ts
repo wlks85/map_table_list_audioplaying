@@ -7,7 +7,7 @@ const upload = multer({ dest: 'uploads/' });
 
 
 slugRoutes.post('/upload', upload.single('file'), uploadCsv);
-slugRoutes.get('/', getSlug);
+slugRoutes.get('/:slug', getSlug);
 
 
 export default slugRoutes;

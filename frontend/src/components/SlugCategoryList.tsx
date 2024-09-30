@@ -6,6 +6,7 @@ import playIcon from '../assets/play-icon.svg';
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getColor } from "../redux/themeSlice";
+import { SlugService } from "../services/SlugService";
 
 interface PageTitle {
     id: number;
@@ -21,8 +22,8 @@ interface PageTitle {
     audio: string;
 }
 
-const PageTitle: React.FC = () => {
-    const { pagenumber, subcategory } = useParams<{ pagenumber: string }>();
+const SlugCategoryList: React.FC = () => {
+    const { slug } = useParams<{ slug: string }>();
     const [error, setError] = useState<string | null>(null);
 
     const dispatch = useDispatch<any>();
@@ -34,16 +35,23 @@ const PageTitle: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const [currentAudioId, setCurrentAudioId] = useState<number | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
+    const [pagenumber, setPagenumber] = useState(0);
+
+    const [subcategory, setSubcategory] = useState('');
 
     useEffect(() => {
         dispatch(getColor());
-        CategoriesServices.getPageTitle(pagenumber)
-            .then((data) => {
-                setPageTitleData(data.data);
-            })
-            .catch(() => alert("Error fetching"));
-    }, [pagenumber]);
+        SlugService.getSlug(`${slug}`).then(data => {
+            setPagenumber(Number(data?.Pagenumber))
+            setSubcategory(data?.Subcategory)
+            CategoriesServices.getPageTitle(data?.Pagenumber)
+                .then((res) => {
+                    setPageTitleData(res.data);
+                })
+                .catch(() => alert("Error fetching"));
+        })
+    }, [slug]);
 
 
 
@@ -172,4 +180,4 @@ const PageTitle: React.FC = () => {
     );
 };
 
-export default PageTitle;
+export default SlugCategoryList;

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { csvToJson } from '../utils/csvToJson';
 import slugModel from '../model/slugModel';
-
+import categoryModel from '../model/categoryModel';
 export const uploadCsv = async (req: Request, res: Response) => {
     try {
         const slugs = await csvToJson(req.file.path);
@@ -16,9 +16,16 @@ export const uploadCsv = async (req: Request, res: Response) => {
 
 export const getSlug = async (req: Request, res: Response) => {
     try {
-        // console.log('records')
-        const data = await slugModel.findOne({ slug: req.query.slug });
-        res.status(200).json(data);
+        const slug = await slugModel.findOne({ slug: req.params.slug });
+        if (slug) {
+            const record = await categoryModel.findOne({ Pagetitle: slug.title });
+            res.status(200).json({
+                Pagenumber: record?.Pagenumber,
+                Subcategory: record?.Subcategory
+            });
+        } else {
+            res.status(400).json({});
+        }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

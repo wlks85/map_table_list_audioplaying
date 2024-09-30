@@ -1,7 +1,6 @@
 // import * as React from "react";
 import {
   createBrowserRouter,
-  Navigate,
   RouterProvider
 } from "react-router-dom";
 
@@ -11,7 +10,7 @@ import Layout
   from "./components/Layout";
 import HomePage from "./pages/Home";
 import PageTitle from "./components/PageTitle";
-import NewCategoriesList from "./components/NewCategoriesList";
+
 const router = createBrowserRouter([
   {
     path: "/",
