@@ -4,7 +4,7 @@ const host: string = env.VITE_API_ROOT || "176.10.111.19";
 // const port: string = env.VITE_NODE_ENV === "local" ? ":8000" : "";
 const port = ":8001";
 // const scheme: string = env.VITE_NODE_ENV === "local" ? "http" : "https";
-const scheme = "https";
+const scheme = "http";
 const BASE_URL = `${scheme}://${host}${port}/api/v1`;
 
 export const CategoriesServices = {

@@ -19,24 +19,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to="/Grammatik" />
-      },
-      {
-        path: "/Grammatik",
         element: <HomePage />
       },
-      // {
-      //     path: "/word/:wordId",
-      //     element: <WordVariants />,
-      // },
+      {
+        path: "/:categories",
+        element: <HomePage />
+      },
+      {
+        path: "/slug/:slug",
+        element: <HomePage />
+      },
       {
         path: "/:subcategory/:pagenumber",
         element: <PageTitle />,
       },
-      {
-        path: "/:categories",
-        element: <NewCategoriesList />,
-      },
+      // {
+      //   path: "/:categories",
+      //   element: <NewCategoriesList />,
+      // },
     ]
   },
 ]);

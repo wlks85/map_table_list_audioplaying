@@ -1,4 +1,5 @@
 
+import { useSelector } from 'react-redux';
 import CategoriesList from '../components/CategoriesList';
 
 const HomePage = () => {

@@ -2,49 +2,50 @@ import { useEffect, useState } from "react";
 import SubCategoriesList from "./SubCategoriesList";
 import downarrow from "../assets/down-arrow-svgrepo-com.svg";
 import { CategoriesServices } from "../services/CategoriesServices";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategory, getColor, setCategory, submitColor } from "../redux/themeSlice";
 
-interface categories {
-    Maincategory: string;
-    Subcategory: string;
-}
+const colors: string[] = [
+    'magenta', '#ffdd62', '#e21327', '#71cff1', '#f78551', '#02998a', 'blue', 'purple', 'pink', 'brown'
+];
 
 const CategoriesList: React.FC = () => {
-
-    const [categories, setCategories] = useState<categories[]>([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>('Grammatik');
+    const dispatch = useDispatch<any>();
     const navigate = useNavigate();
-
+    const params = useParams();
+    const data = useSelector((state: any) => state.theme);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<string>('Grammatik');
+    const [uniqueData, setUniqueData] = useState<any[]>([])
+    console.log(params.slug)
 
     useEffect(() => {
+        dispatch(getColor());
+        dispatch(getCategory());
         CategoriesServices.getCategories()
             .then((data) => {
-                // console.log("works", data);
-                setCategories(data);
+                setUniqueData(Array.from(new Map(data.map((item: any) => [item.Maincategory, item])).values()))
             })
             .catch(() => alert("Error fetching"));
     }, []);
 
-    // console.log(uniqueData)
+    useEffect(() => {
+        setSelectedCategory(data.category)
+    }, [data.category])
+
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
-    const handleCategoryClick = (category: string) => {
-        setSelectedCategory(category);
-        navigate(`/${category}`)
+    const handleCategoryClick = async (category: string, color: string) => {
         setIsOpen(false);
+        setSelectedCategory(category);
+        await dispatch(setCategory(category))
+        await dispatch(submitColor(color));
+        navigate(`/${category}`)
     };
 
-    const colors: string[] = [
-        'magenta','#ffdd62', '#e21327', '#71cff1', '#f78551', '#02998a', 'blue', 'purple', 'pink', 'brown' 
-    ];
-
-
-    const uniqueData = Array.from(new Map(categories.map(item => [item.Maincategory, item])).values())
-    // const uniqueData = categories.map(item =>)
-    console.log(uniqueData)
 
     return (
         <div className="">
@@ -52,7 +53,8 @@ const CategoriesList: React.FC = () => {
             <div className="relative text-center ">
                 <div className="fixed top-0 w-full lg:w-[768px] md:w-[768px] z-30">
                     <div
-                        className="inline-flex justify-between items-center w-full px-4 py-4 bg-[#ffdd62] text-lg font-bold text-gray-700 focus:outline-none"
+                        style={{ backgroundColor: data?.color }}
+                        className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${data?.colo}] text-lg font-bold text-gray-700 focus:outline-none`}
                         id="menu-button"
                         aria-expanded={isOpen}
                         aria-haspopup="true"
@@ -82,7 +84,7 @@ const CategoriesList: React.FC = () => {
                                         style={{ backgroundColor: colors[index % colors.length] }}
                                         className={`text-xl font-bold ${item?.color ? `text-[${item.color}]` : `text-white`} ${item?.bg_color ? `bg-[${item.bg_color}]` : `bg-[${colors[index % colors.length]}]`} hover:text-black block px-4 py-16 cursor-pointer`}
                                         role="menuitem"
-                                        onClick={() => handleCategoryClick(item?.Maincategory)}
+                                        onClick={() => handleCategoryClick(item?.Maincategory, colors[index % colors.length])}
                                     >
                                         {item.Maincategory}
                                     </div>

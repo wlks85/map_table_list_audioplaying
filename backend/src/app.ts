@@ -6,6 +6,7 @@ import recordRoutes from './routes/recordRoutes';
 import categoryRoutes from './routes/categoryRoute';
 import audioRoute from './routes/audioRoutes';
 import variantRoute from './routes/variantRoute';
+import slugRoute from './routes/slugRoutes';
 
 
 
@@ -38,6 +39,8 @@ app.use('/api/v1/variant', variantRoute);
 
 // Audio File API 
 app.use("/api/v1/audios", audioRoute)
+
+app.use('/api/v1/slugs', slugRoute);
 
 
 

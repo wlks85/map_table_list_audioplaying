@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { CategoriesServices } from "../services/CategoriesServices";
 import leftarrow from '../assets/left-arrow.svg';
 import playIcon from '../assets/play-icon.svg';
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getColor } from "../redux/themeSlice";
 
 interface PageTitle {
     id: number;
@@ -23,6 +25,8 @@ const PageTitle: React.FC = () => {
     const { pagenumber, subcategory } = useParams<{ pagenumber: string }>();
     const [error, setError] = useState<string | null>(null);
 
+    const dispatch = useDispatch<any>();
+    const data = useSelector((state: any) => state.theme);
     const [pageTitleData, setPageTitleData] = useState<PageTitle[]>([]);
     const [audioName, setAudioName] = useState<string | null>(null);
     const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
@@ -30,10 +34,12 @@ const PageTitle: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const [currentAudioId, setCurrentAudioId] = useState<number | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
-
     const navigate = useNavigate();
+ 
+    
 
     useEffect(() => {
+        dispatch(getColor());
         CategoriesServices.getPageTitle(pagenumber)
             .then((data) => {
                 setPageTitleData(data.data);
@@ -101,7 +107,9 @@ const PageTitle: React.FC = () => {
     };
     return (
         <div>
-            <div className="inline-flex justify-between items-center w-full px-4 py-4 bg-[#ffdd62]  text-lg font-bold text-gray-700 focus:outline-none">
+            <div
+                style={{ backgroundColor: data?.color }}
+                className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${data?.color}]  text-lg font-bold text-gray-700 focus:outline-none`}>
                 <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(-1)} />
                 <div className="flex-grow text-center text-xl">
                     {pageTitleData[0]?.word}
@@ -150,13 +158,13 @@ const PageTitle: React.FC = () => {
 
             <div className="text-gray-500">
                 <div className="flex justify-between items-center">
-                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) - 1}`)} className="cursor-pointer">
+                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) - 2}`)} className="cursor-pointer">
                         Previous Page
                     </button>
                     <div>
                         {pagenumber}
                     </div>
-                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) + 1}`)} className="cursor-pointer">
+                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) + 2}`)} className="cursor-pointer">
                         Next Page
                     </button>
                 </div>

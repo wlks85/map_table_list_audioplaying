@@ -23,6 +23,13 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
     const navigate = useNavigate();
 
     useEffect(() => {
+        let sub_category = localStorage.getItem('sub_category');
+        if (sub_category) {
+            setSubcategory(sub_category);
+        }
+    }, []);
+
+    useEffect(() => {
         CategoriesServices.getSubCategories(selectedCategory)
             .then((data) => {
                 setCategories(data);
@@ -34,6 +41,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
     const handleButtonClick = (subcategory: string) => {
 
         setSubcategory(subcategory);
+        localStorage.setItem('sub_category', subcategory);
         // console.log(activeIndex, index)
     };
 
@@ -46,7 +54,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
     const uniquePageTitle = categories.filter(item => item.Subcategory === subcategory);
     uniquePageTitle.sort((a, b) => a.Pagetitle.localeCompare(b.Pagetitle));
 
-    const pageTitle = Array.from(new Map(uniquePageTitle.map(item=> [item.Pagetitle, item])).values());
+    const pageTitle = Array.from(new Map(uniquePageTitle.map(item => [item.Pagetitle, item])).values());
 
     return (
         <div >
