@@ -56,7 +56,7 @@ const PageTitle: React.FC = () => {
         const fetchAudio = async () => {
             if (audioName) {
                 try {
-                    const response = await axios.get(`http://176.10.111.19:8001/api/v1/audios/${audioName}`, {
+                    const response = await axios.get(`https://audio.dialektatlas.ch:8001/api/v1/audios/${audioName}`, {
                         responseType: 'blob'
                     });
                     const audioUrl = URL.createObjectURL(response.data);
