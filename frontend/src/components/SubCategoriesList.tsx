@@ -3,7 +3,7 @@ import { CategoriesServices } from "../services/CategoriesServices";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Categories {
     Maincategory: string;
@@ -46,6 +46,8 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
     const uniquePageTitle = categories.filter(item => item.Subcategory === subcategory);
     uniquePageTitle.sort((a, b) => a.Pagetitle.localeCompare(b.Pagetitle));
 
+    const pageTitle = Array.from(new Map(uniquePageTitle.map(item=> [item.Pagetitle, item])).values());
+
     return (
         <div >
             <div className="bg-gray-200 py-4 px-2 mt-14">
@@ -67,11 +69,11 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
                 </Swiper>
             </div>
 
-            {uniquePageTitle.map((pageTitle, index) => (
+            {pageTitle.map((pageTitle, index) => (
                 <div
                     className="flex items-center justify-between text-xl font-extrabold py-4 px-3 m-2 border-b-2 shadow-sm cursor-pointer"
                     key={index}
-                    onClick={() => navigate(`/page/${pageTitle?.Pagenumber}`)}
+                    onClick={() => navigate(`/${subcategory}/${pageTitle?.Pagenumber}`)}
                 >
                     <span className="font-extrabold">{pageTitle.Pagetitle}</span>
                     <svg className="w-4 h-4 ml-2 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

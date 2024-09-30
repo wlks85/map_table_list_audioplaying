@@ -29,17 +29,11 @@ export const getRecords = async (req: Request, res: Response) => {
 export const pagetitleController = async (req: Request, res: Response) => {
     try {
         const pageNumber = parseInt(req.query.pageNumber as string);
-        // console.log('first')
-        const page = parseInt(req.query.page as string) || 1;
-        const limit = parseInt(req.query.limit as string) || 10;
-        const skip = (page - 1) * limit;
-        const records = await recordModel.find({ page: pageNumber }).skip(skip).limit(limit).sort({ variant: 1 });
-        const total = await recordModel.countDocuments({ page: pageNumber });
+      
+        const records = await recordModel.find({ page: pageNumber });
+        const uniqueRecords = Array.from(new Map(records.map(item => [item.variant, item])).values());
         res.status(200).json({
-            data: records,
-            total,
-            page,
-            pages: Math.ceil(total / limit),
+            data: uniqueRecords,
         });
 
 

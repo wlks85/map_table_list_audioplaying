@@ -1,9 +1,11 @@
 import axios from "axios";
 const env = import.meta.env;
-// const host: string = env.VITE_API_ROOT || "176.10.111.19";
+const host: string = env.VITE_API_ROOT || "176.10.111.19";
 // const port: string = env.VITE_NODE_ENV === "local" ? ":8000" : "";
+const port = ":8001";
 // const scheme: string = env.VITE_NODE_ENV === "local" ? "http" : "https";
-const BASE_URL = `http://176.10.111.19:8001/api/v1`;
+const scheme = "https";
+const BASE_URL = `${scheme}://${host}${port}/api/v1`;
 
 export const CategoriesServices = {
     async getCategories() {
@@ -24,8 +26,8 @@ export const CategoriesServices = {
       if (status === 200) return data;
       else throw new Error("Could not fetch data");
     },
-    async getPageTitle(pagenumber: string, page: string, ) {
-      const { status, data } = await axios.get(`${BASE_URL}/variant?page=${page}&limit=10&pageNumber=${pagenumber}`);
+    async getPageTitle(pagenumber: string ) {
+      const { status, data } = await axios.get(`${BASE_URL}/variant?pageNumber=${pagenumber}`);
       // console.log(`${BASE_URL}/categories/pagedata?page=${page}&limit=10&pageNumber=${pagenumber}`);
       if (status === 200) return data;
       else throw new Error("Could not fetch data");

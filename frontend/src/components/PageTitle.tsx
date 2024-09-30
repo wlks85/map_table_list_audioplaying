@@ -20,11 +20,9 @@ interface PageTitle {
 }
 
 const PageTitle: React.FC = () => {
-    const { pagenumber } = useParams<{ pagenumber: string }>();
-    const [page, setPage] = useState(1);
+    const { pagenumber, subcategory } = useParams<{ pagenumber: string }>();
     const [error, setError] = useState<string | null>(null);
 
-    const [totalPages, setTotalPages] = useState(0);
     const [pageTitleData, setPageTitleData] = useState<PageTitle[]>([]);
     const [audioName, setAudioName] = useState<string | null>(null);
     const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
@@ -36,25 +34,14 @@ const PageTitle: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        CategoriesServices.getPageTitle(pagenumber, page)
+        CategoriesServices.getPageTitle(pagenumber)
             .then((data) => {
                 setPageTitleData(data.data);
-                setTotalPages(data.pages);
             })
             .catch(() => alert("Error fetching"));
-    }, [page, pagenumber]);
+    }, [pagenumber]);
 
-    const handleNextPage = () => {
-        if (page < totalPages) {
-            setPage(page + 1);
-        }
-    };
 
-    const handlePreviousPage = () => {
-        if (page > 1) {
-            setPage(page - 1);
-        }
-    };
 
 
     // console.log(audioName)
@@ -114,12 +101,17 @@ const PageTitle: React.FC = () => {
     };
     return (
         <div>
-            <div className="inline-flex justify-between items-center w-full px-4 py-4 bg-yellow-400 text-lg font-bold text-gray-700 hover:bg-yellow-500 focus:outline-none">
-                <img className="h-6 w-6 text-gray-700" src={leftarrow} alt="Left Arrow" onClick={() => navigate('/')} />
+            <div className="inline-flex justify-between items-center w-full px-4 py-4 bg-[#ffdd62]  text-lg font-bold text-gray-700 focus:outline-none">
+                <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(-1)} />
                 <div className="flex-grow text-center text-xl">
                     {pageTitleData[0]?.word}
                 </div>
             </div>
+
+            {pageTitleData[0]?.variant || <div className="text-red-500 text-xl font-bold text-center h-full py-20">
+                <div >Page Data not found </div>
+                <button onClick={() => navigate("/")}>Home</button>
+            </div>}
 
             {pageTitleData?.map((pageTitle, index) => (
                 <div className="flex flex-col items-center justify-between py-4 px-3 m-2 border-b-2 shadow-sm text-gray-700" key={index} >
@@ -133,7 +125,7 @@ const PageTitle: React.FC = () => {
                             setAudioName(pageTitle.audio.slice(0, -4));
                             setCurrentAudioId(pageTitle.ID);
                             // Update the URL without reloading the page
-                            window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
+                            // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
                         }} />
 
                     </div>
@@ -158,14 +150,14 @@ const PageTitle: React.FC = () => {
 
             <div className="text-gray-500">
                 <div className="flex justify-between items-center">
-                    <button onClick={handlePreviousPage} disabled={page === 1} className="cursor-pointer">
-                        Previous
+                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) - 1}`)} className="cursor-pointer">
+                        Previous Page
                     </button>
                     <div>
-                        Page {page} of {totalPages}
+                        {pagenumber}
                     </div>
-                    <button onClick={handleNextPage} disabled={page === totalPages} className="cursor-pointer">
-                        Next
+                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) + 1}`)} className="cursor-pointer">
+                        Next Page
                     </button>
                 </div>
 
