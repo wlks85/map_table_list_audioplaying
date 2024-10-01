@@ -30,10 +30,22 @@ export const submitColor = createAsyncThunk(
   }
 );
 
+export const getTextColor = createAsyncThunk("appTheme/getTextColor", async () => {
+  let textColor = localStorage.getItem('textColor') || '#ffdd62'
+  return { textColor }
+});
+
+export const setTextColor = createAsyncThunk("appTheme/setTextColor", async (textColor: string) => {
+    localStorage.setItem('textColor', textColor);
+    return { textColor };
+
+});
+
 export const appTheme = createSlice({
   name: "appTheme",
   initialState: {
     color: '#ffdd62',
+    textColor: '#ffffff',
     category: 'Grammatik',
     sub_category: ''
   },
@@ -45,6 +57,12 @@ export const appTheme = createSlice({
       })
       .addCase(setCategory.fulfilled, (state: any, action: any) => {
         state.category = action.payload.category;
+      })
+      .addCase(getTextColor.fulfilled, (state: any, action: any) => {
+        if (action?.payload?.textColor) state.textColor = action?.payload?.textColor;
+      })
+      .addCase(setTextColor.fulfilled, (state: any, action: any) => {
+        state.textColor = action.payload.textColor;
       })
       .addCase(getColor.fulfilled, (state: any, action: any) => {
         if (action?.payload?.color) state.color = action?.payload?.color;

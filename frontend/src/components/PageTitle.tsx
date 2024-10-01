@@ -1,9 +1,8 @@
-import { useEffect, useState, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { CategoriesServices } from "../services/CategoriesServices";
 import leftarrow from '../assets/left-arrow.svg';
 import playIcon from '../assets/play-icon.svg';
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getColor } from "../redux/themeSlice";
 
@@ -24,17 +23,15 @@ interface PageTitle {
 const PageTitle: React.FC = () => {
     const { pagenumber, subcategory } = useParams<{ pagenumber: string }>();
     const [error, setError] = useState<string | null>(null);
-
+    const [isPlaying, setIsPlaying] = useState(false);
     const dispatch = useDispatch<any>();
     const data = useSelector((state: any) => state.theme);
     const [pageTitleData, setPageTitleData] = useState<PageTitle[]>([]);
     const [audioName, setAudioName] = useState<string | null>(null);
     const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-    // const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [currentAudioId, setCurrentAudioId] = useState<number | null>(null);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getColor());
@@ -46,44 +43,72 @@ const PageTitle: React.FC = () => {
     }, [pagenumber]);
 
 
-
+    const fetchAudio = async (audioName: string) => {
+        if (audioName) {
+            if (isPlaying) return;
+            setProgress(0);
+            try {
+                setIsPlaying(true);
+                var ap = new Audio('');
+                setAudio(ap);
+                ap.src = `https://audio.dialektatlas.ch/file/${audioName}.flac`
+                ap.addEventListener('loadeddata', () => {
+                    ap.play();
+                });
+                ap.addEventListener('timeupdate', () => {
+                    setProgress((ap.currentTime / ap.duration) * 100);
+                });
+                ap.addEventListener('ended', () => {
+                    setIsPlaying(false);
+                    setProgress(0);
+                    setCurrentAudioId(null);
+                });
+                ap.addEventListener('error', () => {
+                    setIsPlaying(false);
+                    setError('Failed to load audio');
+                });
+                ap.load()
+                setError('');
+            } catch (error) {
+                console.error('Error playing audio:', error);
+                setError(error?.message)
+            }
+        }
+    };
 
     // console.log(audioName)
 
-    useEffect(() => {
-        const fetchAudio = async () => {
-            if (audioName) {
-                try {
-                    const response = await axios.get(`https://audio.dialektatlas.ch/api/v1/audios/${audioName}`, {
-                        responseType: 'blob'
-                    });
-                    const audioUrl = URL.createObjectURL(response.data);
-                    const newAudio = new Audio(audioUrl);
-                    setAudio(newAudio);
-                    audioRef.current = newAudio;
+    // useEffect(() => {
+    //     const fetchAudio = async () => {
+    //         if (audioName) {
+    //             setProgress(0);
+    //             try {
+    //                 const response = await axios.get(`http://176.10.111.19:8001/api/v1/audios/${audioName}`, {
+    //                     responseType: 'blob'
+    //                 });
+    //                 const audioUrl = URL.createObjectURL(response.data);
+    //                 audioRef.current!.src = audioUrl
+    //                 setAudio(audioRef.current);
+    //                 audioRef.current!.addEventListener('timeupdate', () => {
+    //                     setProgress((audioRef.current!.currentTime / audioRef.current!.duration) * 100);
+    //                 });
 
-                    newAudio.addEventListener('timeupdate', () => {
-                        setProgress((newAudio.currentTime / newAudio.duration) * 100);
-                    });
+    //                 audioRef.current!.addEventListener('ended', () => {
+    //                     setProgress(0);
+    //                 });
 
-                    newAudio.addEventListener('ended', () => {
-                        // setIsPlaying(false);
-                        setProgress(0);
-                        setCurrentAudioId(null);
-                    });
+    //                 audioRef.current!.play();
+    //                 setError('');
+    //                 // setIsPlaying(true);
+    //             } catch (error) {
+    //                 console.error('Error playing audio:', error);
+    //                 setError(error?.message)
+    //             }
+    //         }
+    //     };
 
-                    newAudio.play();
-                    setError('');
-                    // setIsPlaying(true);
-                } catch (error) {
-                    console.error('Error playing audio:', error);
-                    setError(error?.message)
-                }
-            }
-        };
-
-        fetchAudio();
-    }, [audioName]);
+    //     fetchAudio();
+    // }, [audioName]);
 
     // const togglePlayPause = () => {
     //     if (audio) {
@@ -128,8 +153,10 @@ const PageTitle: React.FC = () => {
                         </div>
                         <img className="h-10 w-10 text-gray-700 cursor-pointer" src={playIcon} alt="Play Button" onClick={(e) => {
                             e.stopPropagation();
-                            setAudioName(pageTitle.audio.slice(0, -4));
                             setCurrentAudioId(pageTitle.ID);
+                            setAudioName(pageTitle.audio.slice(0, -4));
+                            fetchAudio(pageTitle.audio.slice(0, -4))
+
                             // Update the URL without reloading the page
                             // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
                         }} />
@@ -157,13 +184,13 @@ const PageTitle: React.FC = () => {
             <div className="text-gray-500">
                 <div className="flex justify-between items-center">
                     <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) - 2}`)} className="cursor-pointer">
-                        Previous Page
+                    Vorherige Seite
                     </button>
                     <div>
                         {pagenumber}
                     </div>
                     <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) + 2}`)} className="cursor-pointer">
-                        Next Page
+                    Nächste Seite
                     </button>
                 </div>
 
