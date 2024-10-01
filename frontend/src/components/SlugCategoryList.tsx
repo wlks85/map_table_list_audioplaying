@@ -54,8 +54,6 @@ const SlugCategoryList: React.FC = () => {
     }, [slug]);
 
 
-
-
     // console.log(audioName)
 
     useEffect(() => {
@@ -122,7 +120,7 @@ const SlugCategoryList: React.FC = () => {
                 </div>
             </div>
 
-            {pageTitleData[0]?.variant || <div className="text-red-500 text-xl font-bold text-center h-full py-20">
+            {pageTitleData[0]?.variant == null && <div className="text-red-500 text-xl font-bold text-center h-full py-20">
                 <div >Page Data not found </div>
                 <button onClick={() => navigate("/")}>Home</button>
             </div>}
