@@ -21,6 +21,13 @@ interface PageTitle {
     uid: string;
     audio: string;
 }
+const colors: string[] = [
+    'magenta', '#ffdd62', '#e11325', '#71cdf1', '#f08757', '#f08757', 'blue', 'purple', 'pink', 'brown'
+];
+
+const textColors: string[] = [
+    'normal', '#8d8070', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'
+]
 
 const SlugCategoryList: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -37,6 +44,8 @@ const SlugCategoryList: React.FC = () => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const navigate = useNavigate();
     const [pagenumber, setPagenumber] = useState(0);
+    const [color, setColor] = useState('#ffdd62');
+    const [textColor, setTextColor] = useState('#8d8070');
 
     const [subcategory, setSubcategory] = useState('');
 
@@ -48,6 +57,26 @@ const SlugCategoryList: React.FC = () => {
             CategoriesServices.getPageTitle(data?.Pagenumber)
                 .then((res) => {
                     setPageTitleData(res.data);
+
+                    if (Number(data.Pagenumber) <= 142) {
+                        setColor(colors[1]);
+                        setTextColor(textColors[1]);
+                    }
+                    else if (Number(data.Pagenumber) <= 250) {
+                        setColor(colors[2]);
+                        setTextColor(textColors[2]);
+
+                    }
+                    else if (Number(data.Pagenumber) <= 334) {
+                        setColor(colors[3]);
+                        setTextColor(textColors[3]);
+
+                    }
+                    else if (Number(data.Pagenumber) <= 358) {
+                        setColor(colors[4]);
+                        setTextColor(textColors[4]);
+
+                    }
                 })
                 .catch(() => alert("Error fetching"));
         })
@@ -61,7 +90,7 @@ const SlugCategoryList: React.FC = () => {
                 setIsPlaying(true);
                 var ap = new Audio('');
                 setAudio(ap);
-                ap.src = `https://audio.dialektatlas.ch/file/${audioName}.flac`
+                ap.src = `http://176.10.111.19:8001/file/${audioName}.flac`
                 ap.addEventListener('loadeddata', () => {
                     ap.play();
                 });
@@ -143,8 +172,8 @@ const SlugCategoryList: React.FC = () => {
     return (
         <div>
             <div
-                style={{ backgroundColor: data?.color }}
-                className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${data?.color}]  text-lg font-bold text-gray-700 focus:outline-none`}>
+                style={{ backgroundColor: color, color: textColor }}
+                className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${color}]  text-lg font-bold text-gray-700 focus:outline-none`}>
                 <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(-1)} />
                 <div className="flex-grow text-center text-xl">
                     {pageTitleData[0]?.word}

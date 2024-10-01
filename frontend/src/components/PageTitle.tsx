@@ -33,11 +33,14 @@ const PageTitle: React.FC = () => {
     const [currentAudioId, setCurrentAudioId] = useState<number | null>(null);
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
         dispatch(getColor());
         CategoriesServices.getPageTitle(pagenumber)
             .then((data) => {
                 setPageTitleData(data.data);
+                
             })
             .catch(() => alert("Error fetching"));
     }, [pagenumber]);
@@ -51,7 +54,7 @@ const PageTitle: React.FC = () => {
                 setIsPlaying(true);
                 var ap = new Audio('');
                 setAudio(ap);
-                ap.src = `https://audio.dialektatlas.ch/file/${audioName}.flac`
+                ap.src = `http://176.10.111.19:8001/file/${audioName}.flac`
                 ap.addEventListener('loadeddata', () => {
                     ap.play();
                 });
@@ -128,6 +131,8 @@ const PageTitle: React.FC = () => {
             setProgress(Number(event.target.value));
         }
     };
+
+    
     return (
         <div>
             <div

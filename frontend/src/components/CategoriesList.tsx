@@ -8,7 +8,7 @@ import { getCategory, getColor, getTextColor, setCategory, setTextColor, submitC
 import { SlugService } from "../services/SlugService";
 
 const colors: string[] = [
-    'magenta', '#ffdd62', '#e21327', '#71cff1', '#f78551', '#02998a', 'blue', 'purple', 'pink', 'brown'
+    'magenta', '#ffdd62', '#e11325', '#71cdf1', '#f08757', '#f08757', 'blue', 'purple', 'pink', 'brown'
 ];
 
 const textColors: string[] = [
@@ -83,19 +83,39 @@ const CategoriesList: React.FC = () => {
                         aria-labelledby="menu-button"
                     >
                         <div className="" role="none">
-                            {uniqueData.map((item, index) => (
-                                item.Maincategory && (
+                            {uniqueData.map((item, index) => {
+                                    var color = '#ffdd62';
+                                    var textColor = '#8d8070';
+
+                                    if(Number(item.page)<=142){
+                                        color = colors[1];
+                                        textColor = textColors[1];
+                                    }
+                                    else if(Number(item.page)<=250){
+                                        color = colors[2];
+                                        textColor = textColors[2];
+                                    }
+                                    else if(Number(item.page)<=334){
+                                        color = colors[3];
+                                        textColor = textColors[3];
+                                    }
+                                    else if(Number(item.page)<=358){
+                                        color = colors[4];
+                                        textColor = textColors[4];
+                                    }
+                                if (item.Maincategory) return (
                                     <div
                                         key={index}
-                                        style={{ backgroundColor: colors[index % colors.length], color: textColors[index % colors.length] }}
-                                        className={`text-xl font-bold text-[${textColors[index % colors.length]}] ${item?.bg_color ? `bg-[${item.bg_color}]` : `bg-[${colors[index % colors.length]}]`} hover:text-black block px-4 py-16 cursor-pointer`}
+                                        style={{ backgroundColor: color, color: textColor }}
+                                        className={`text-xl font-bold text-[${textColor}] ${item?.bg_color ? `bg-[${item.bg_color}]` : `bg-[${color}]`} hover:text-black block px-4 py-16 cursor-pointer`}
                                         role="menuitem"
-                                        onClick={() => handleCategoryClick(item?.Maincategory, colors[index % colors.length], textColors[index % colors.length])}
+                                        onClick={() => handleCategoryClick(item?.Maincategory, color, textColor)}
                                     >
                                         {item.Maincategory}
                                     </div>
                                 )
-                            ))}
+                            }
+                            )}
                         </div>
                     </div>
                 )}
