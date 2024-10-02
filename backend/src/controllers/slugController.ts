@@ -21,7 +21,8 @@ export const getSlug = async (req: Request, res: Response) => {
             const record = await categoryModel.findOne({ Pagetitle: slug.title });
             res.status(200).json({
                 Pagenumber: record?.Pagenumber,
-                Subcategory: record?.Subcategory
+                Subcategory: record?.Subcategory,
+                Maincategory: record?.Maincategory
             });
         } else {
             res.status(400).json({});

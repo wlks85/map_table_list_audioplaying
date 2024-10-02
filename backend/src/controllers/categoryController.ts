@@ -17,7 +17,7 @@ export const uploadCategoryCsv = async (req: Request, res: Response) => {
 export const getCategories = async (req: Request, res: Response) => {
     try {
         // console.log('records')
-        const categories = await categoryModel.find().sort({ Maincategory: 1 });;
+        const categories = await categoryModel.find().sort({ uid: 1 });;
         res.status(200).json(categories);
     } catch (error) {
         res.status(500).json({ error: error.message });

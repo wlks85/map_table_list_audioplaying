@@ -47,6 +47,7 @@ const SlugCategoryList: React.FC = () => {
     const [color, setColor] = useState('#ffdd62');
     const [textColor, setTextColor] = useState('#8d8070');
 
+    const [maincategory, setMaincategory] = useState('');
     const [subcategory, setSubcategory] = useState('');
 
     useEffect(() => {
@@ -54,6 +55,7 @@ const SlugCategoryList: React.FC = () => {
         SlugService.getSlug(`${slug}`).then(data => {
             setPagenumber(Number(data?.Pagenumber))
             setSubcategory(data?.Subcategory)
+            setMaincategory(data?.Maincategory)
             CategoriesServices.getPageTitle(data?.Pagenumber)
                 .then((res) => {
                     setPageTitleData(res.data);
@@ -174,7 +176,7 @@ const SlugCategoryList: React.FC = () => {
             <div
                 style={{ backgroundColor: color, color: textColor }}
                 className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${color}]  text-lg font-bold text-gray-700 focus:outline-none`}>
-                <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(-1)} />
+                <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(`/${maincategory}`)} />
                 <div className="flex-grow text-center text-xl">
                     {pageTitleData[0]?.word}
                 </div>
