@@ -5,7 +5,6 @@ import { CategoriesServices } from "../services/CategoriesServices";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory, getColor, getTextColor, setCategory, setTextColor, submitColor } from "../redux/themeSlice";
-import { SlugService } from "../services/SlugService";
 
 const colors: string[] = [
     'magenta', '#ffdd62', '#e11325', '#71cdf1', '#f08757', '#f08757', 'blue', 'purple', 'pink', 'brown'
@@ -15,15 +14,16 @@ const textColors: string[] = [
     'normal', '#8d8070', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'
 ]
 
-const CategoriesList: React.FC = () => {
+const CategoriesList: React.FC = (props: any) => {
     const dispatch = useDispatch<any>();
     const navigate = useNavigate();
     const data = useSelector((state: any) => state.theme);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<string>('Grammatik');
     const [uniqueData, setUniqueData] = useState<any[]>([])
 
     useEffect(() => {
+        if(props.category) setIsOpen(false);
         dispatch(getColor());
         dispatch(getTextColor());
         dispatch(getCategory());
@@ -84,25 +84,25 @@ const CategoriesList: React.FC = () => {
                     >
                         <div className="" role="none">
                             {uniqueData.map((item, index) => {
-                                    var color = '#ffdd62';
-                                    var textColor = '#8d8070';
+                                var color = '#ffdd62';
+                                var textColor = '#8d8070';
 
-                                    if(Number(item.page)<=142){
-                                        color = colors[1];
-                                        textColor = textColors[1];
-                                    }
-                                    else if(Number(item.page)<=250){
-                                        color = colors[2];
-                                        textColor = textColors[2];
-                                    }
-                                    else if(Number(item.page)<=334){
-                                        color = colors[3];
-                                        textColor = textColors[3];
-                                    }
-                                    else if(Number(item.page)<=358){
-                                        color = colors[4];
-                                        textColor = textColors[4];
-                                    }
+                                if (Number(item.page) <= 142) {
+                                    color = colors[1];
+                                    textColor = textColors[1];
+                                }
+                                else if (Number(item.page) <= 250) {
+                                    color = colors[2];
+                                    textColor = textColors[2];
+                                }
+                                else if (Number(item.page) <= 334) {
+                                    color = colors[3];
+                                    textColor = textColors[3];
+                                }
+                                else if (Number(item.page) <= 358) {
+                                    color = colors[4];
+                                    textColor = textColors[4];
+                                }
                                 if (item.Maincategory) return (
                                     <div
                                         key={index}

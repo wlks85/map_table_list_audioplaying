@@ -52,13 +52,14 @@ const SlugCategoryList: React.FC = () => {
 
     useEffect(() => {
         dispatch(getColor());
+        if (slug?.split('_') == undefined || slug?.split('_')?.length < 2) return;
         SlugService.getSlug(`${slug}`).then(data => {
             setPagenumber(Number(data?.Pagenumber))
             setSubcategory(data?.Subcategory)
             setMaincategory(data?.Maincategory)
             CategoriesServices.getPageTitle(data?.Pagenumber)
                 .then((res) => {
-                    setPageTitleData(res.data);
+                    setPageTitleData(res.data.sort((a: any, b: any) => a.word.localeCompare(b.word, 'de', { sensitivity: 'base' })))
 
                     if (Number(data.Pagenumber) <= 142) {
                         setColor(colors[1]);
@@ -97,7 +98,8 @@ const SlugCategoryList: React.FC = () => {
                     ap.play();
                 });
                 ap.addEventListener('timeupdate', () => {
-                    setProgress((ap.currentTime / ap.duration) * 100);
+                    if (ap.duration)
+                        setProgress((ap.currentTime / ap.duration) * 100);
                 });
                 ap.addEventListener('ended', () => {
                     setIsPlaying(false);
@@ -116,53 +118,6 @@ const SlugCategoryList: React.FC = () => {
             }
         }
     };
-    // console.log(audioName)
-
-    // useEffect(() => {
-    //     const fetchAudio = async () => {
-    //         if (audioName) {
-    //             try {
-    //                 const response = await axios.get(`http://176.10.111.19:8001/api/v1/audios/${audioName}`, {
-    //                     responseType: 'blob'
-    //                 });
-    //                 const audioUrl = URL.createObjectURL(response.data);
-    //                 const newAudio = new Audio(audioUrl);
-    //                 setAudio(newAudio);
-    //                 audioRef.current = newAudio;
-
-    //                 newAudio.addEventListener('timeupdate', () => {
-    //                     setProgress((newAudio.currentTime / newAudio.duration) * 100);
-    //                 });
-
-    //                 newAudio.addEventListener('ended', () => {
-    //                     // setIsPlaying(false);
-    //                     setProgress(0);
-    //                     setCurrentAudioId(null);
-    //                 });
-
-    //                 newAudio.play();
-    //                 setError('');
-    //                 // setIsPlaying(true);
-    //             } catch (error) {
-    //                 console.error('Error playing audio:', error);
-    //                 setError(error?.message)
-    //             }
-    //         }
-    //     };
-
-    //     fetchAudio();
-    // }, [audioName]);
-
-    // const togglePlayPause = () => {
-    //     if (audio) {
-    //         if (isPlaying) {
-    //             audio.pause();
-    //         } else {
-    //             audio.play();
-    //         }
-    //         setIsPlaying(!isPlaying);
-    //     }
-    // };
 
     const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (audio) {
@@ -173,71 +128,103 @@ const SlugCategoryList: React.FC = () => {
     };
     return (
         <div>
-            <div
-                style={{ backgroundColor: color, color: textColor }}
-                className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${color}]  text-lg font-bold text-gray-700 focus:outline-none`}>
-                <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(`/${maincategory}`)} />
-                <div className="flex-grow text-center text-xl">
-                    {pageTitleData[0]?.word}
+            <div className="relative text-center ">
+                <div className="fixed top-0 w-full lg:w-[768px] md:w-[768px] z-30">
+
+                    <div
+                        style={{ backgroundColor: data?.color }}
+                        className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${data?.color}]  text-lg font-bold text-gray-700 focus:outline-none`}>
+                        <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(-1)} />
+                        <div className="flex-grow text-center text-xl">
+                            {pageTitleData[0]?.word}
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div className="pt-16">
 
-            {pageTitleData[0]?.variant == null && <div className="text-red-500 text-xl font-bold text-center h-full py-20">
-                <div >Page Data not found </div>
-                <button onClick={() => navigate("/")}>Home</button>
-            </div>}
+                {pageTitleData[0]?.variant == null && <div className="text-red-500 text-xl font-bold text-center h-full py-20">
+                    <div >Page Data not found </div>
+                    <button onClick={() => navigate("/")}>Home</button>
+                </div>}
 
-            {pageTitleData?.map((pageTitle, index) => (
-                <div className="flex flex-col items-center justify-between py-4 px-3 m-2 border-b-2 shadow-sm text-gray-700" key={index} >
-                    <div className="flex items-center justify-between w-full">
-                        <div>
-                            <span className="font-bold text-xl">{pageTitle?.variant}</span>
-                            <p className="text-sm text-gray-600">{pageTitle?.location} | {pageTitle?.cohort}</p>
-                        </div>
-                        <img className="h-10 w-10 text-gray-700 cursor-pointer" src={playIcon} alt="Play Button" onClick={(e) => {
+                {pageTitleData?.map((pageTitle, index) => (
+                    <div className="flex flex-col items-center justify-between py-4 px-3 m-2 border-b-2 shadow-sm text-gray-700" key={index} >
+                        <div className="flex items-center justify-between w-full" onClick={(e) => {
                             e.stopPropagation();
                             setCurrentAudioId(pageTitle.ID);
                             setAudioName(pageTitle.audio.slice(0, -4));
                             fetchAudio(pageTitle.audio.slice(0, -4))
                             // Update the URL without reloading the page
                             // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
-                        }} />
-
-                    </div>
-                    {currentAudioId === pageTitle.ID && (
-                        <div className="w-full mt-2">
-                            {/* <button onClick={togglePlayPause}>{isPlaying ? 'Pause' : 'Play'}</button> */}
-                            <div className="text-red-400">
-                                {error && "Audio Missing"}
+                        }}>
+                            <div>
+                                <span className="font-bold text-xl">{pageTitle?.variant}</span>
+                                <p className="text-sm text-gray-600">{pageTitle?.location} | {pageTitle?.cohort}</p>
                             </div>
-                            <input
-                                type="range"
-                                value={progress}
-                                onChange={handleProgressChange}
-                                max="100"
-                                className="progress-bar"
-                                style={{ '--progress': `${progress}%` } as React.CSSProperties}
-                            />
+                            <img className="h-10 w-10 text-gray-700 cursor-pointer" src={playIcon} alt="Play Button" onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentAudioId(pageTitle.ID);
+                                setAudioName(pageTitle.audio.slice(0, -4));
+                                fetchAudio(pageTitle.audio.slice(0, -4))
+                                // Update the URL without reloading the page
+                                // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
+                            }} />
+
                         </div>
-                    )}
-                </div>
-            ))}
-
-            <div className="text-gray-500">
-                <div className="flex justify-between items-center">
-                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) - 2}`)} className="cursor-pointer">
-                        Vorherige Seite
-                    </button>
-                    <div>
-                        {pagenumber}
+                        {currentAudioId === pageTitle.ID && (
+                            <div className="w-full mt-2">
+                                {/* <button onClick={togglePlayPause}>{isPlaying ? 'Pause' : 'Play'}</button> */}
+                                <div className="text-red-400">
+                                    {error && "Audio Missing"}
+                                </div>
+                                <input
+                                    type="range"
+                                    value={progress}
+                                    onChange={handleProgressChange}
+                                    max="100"
+                                    className="progress-bar"
+                                    style={{ '--progress': `${progress}%` } as React.CSSProperties}
+                                />
+                            </div>
+                        )}
                     </div>
-                    <button onClick={() => navigate(`/${subcategory}/${parseInt(pagenumber) + 2}`)} className="cursor-pointer">
-                        Nächste Seite
-                    </button>
-                </div>
+                ))}
 
+                <div className="text-gray-500">
+                    <div className="flex justify-between items-center">
+                        <button onClick={() => {
+                            CategoriesServices.getNextPage(subcategory, parseInt(pagenumber) - 2, -1).then((data) => {
+                                console.log(data)
+                                if (!data) {
+                                    return;
+                                }
+                                navigate(`/${subcategory}/${parseInt(data.page)}`)
+                            })
+                        }
+
+                        } className="cursor-pointer">
+                            Vorherige Seite
+                        </button>
+                        <div>
+                            {pagenumber}
+                        </div>
+                        <button onClick={() => {
+                            CategoriesServices.getNextPage(subcategory, parseInt(pagenumber) + 2, 1).then((data) => {
+                                console.log(data)
+                                if (!data) {
+                                    return;
+                                }
+                                navigate(`/${subcategory}/${parseInt(data.page)}`)
+                            })
+                        }} className="cursor-pointer">
+                            Nächste Seite
+                        </button>
+                    </div>
+
+                </div>
+                <audio id="audio"></audio>
             </div>
-            <audio id="audio"></audio>
         </div>
     );
 };

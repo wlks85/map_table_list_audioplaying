@@ -18,7 +18,7 @@ export const getSlug = async (req: Request, res: Response) => {
     try {
         const slug = await slugModel.findOne({ slug: req.params.slug });
         if (slug) {
-            const record = await categoryModel.findOne({ Pagetitle: slug.title });
+            const record = await categoryModel.findOne({ Pagetitle: slug.title, Pagenumber: req.params.pagenumber });
             res.status(200).json({
                 Pagenumber: record?.Pagenumber,
                 Subcategory: record?.Subcategory,

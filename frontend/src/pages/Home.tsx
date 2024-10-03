@@ -23,7 +23,7 @@ const HomePage = () => {
                     <SlugCategoryList />
                 </div> :
                     <div className="text-charcoal">
-                        <CategoriesList />
+                        <CategoriesList category={params.categories} />
                     </div>
             }
 
