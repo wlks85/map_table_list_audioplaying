@@ -59,7 +59,8 @@ const SlugCategoryList: React.FC = () => {
             setMaincategory(data?.Maincategory)
             CategoriesServices.getPageTitle(data?.Pagenumber)
                 .then((res) => {
-                    setPageTitleData(res.data.sort((a: any, b: any) => a.word.localeCompare(b.word, 'de', { sensitivity: 'base' })))
+                    res.data.sort((a: any, b: any) => a.word.localeCompare(b.word, 'de', { sensitivity: 'base' }))
+                    setPageTitleData(res.data)
 
                     if (Number(data.Pagenumber) <= 142) {
                         setColor(colors[1]);
@@ -93,7 +94,7 @@ const SlugCategoryList: React.FC = () => {
                 setIsPlaying(true);
                 var ap = new Audio('');
                 setAudio(ap);
-                ap.src = `https://audio.dialektatlas.ch/file/${audioName}.flac`
+                ap.src = `http://176.10.111.19:8001/file/${audioName}.flac`
                 ap.addEventListener('loadeddata', () => {
                     ap.play();
                 });
@@ -153,8 +154,8 @@ const SlugCategoryList: React.FC = () => {
                         <div className="flex items-center justify-between w-full" onClick={(e) => {
                             e.stopPropagation();
                             setCurrentAudioId(pageTitle.ID);
-                            setAudioName(pageTitle.audio);
-                            fetchAudio(pageTitle.audio)
+                            setAudioName(pageTitle.audio.slice(0, -4));
+                            fetchAudio(pageTitle.audio.slice(0, -4))
                             // Update the URL without reloading the page
                             // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
                         }}>
@@ -165,8 +166,8 @@ const SlugCategoryList: React.FC = () => {
                             <img className="h-10 w-10 text-gray-700 cursor-pointer" src={playIcon} alt="Play Button" onClick={(e) => {
                                 e.stopPropagation();
                                 setCurrentAudioId(pageTitle.ID);
-                                setAudioName(pageTitle.audio);
-                                fetchAudio(pageTitle.audio)
+                                setAudioName(pageTitle.audio.slice(0, -4));
+                                fetchAudio(pageTitle.audio.slice(0, -4))
                                 // Update the URL without reloading the page
                                 // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
                             }} />
