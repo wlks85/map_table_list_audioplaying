@@ -162,8 +162,8 @@ const PageTitle: React.FC = () => {
                         <div className="flex items-center justify-between w-full" onClick={(e) => {
                             e.stopPropagation();
                             setCurrentAudioId(pageTitle.ID);
-                            setAudioName(pageTitle.audio.slice(0, -4));
-                            fetchAudio(pageTitle.audio.slice(0, -4))
+                            setAudioName(pageTitle.audio);
+                            fetchAudio(pageTitle.audio)
 
                             // Update the URL without reloading the page
                             // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
@@ -175,8 +175,8 @@ const PageTitle: React.FC = () => {
                             <img className="h-10 w-10 text-gray-700 cursor-pointer" src={playIcon} alt="Play Button" onClick={(e) => {
                                 e.stopPropagation();
                                 setCurrentAudioId(pageTitle.ID);
-                                setAudioName(pageTitle.audio.slice(0, -4));
-                                fetchAudio(pageTitle.audio.slice(0, -4))
+                                setAudioName(pageTitle.audio);
+                                fetchAudio(pageTitle.audio)
                                 // Update the URL without reloading the page
                                 // window.history.pushState({}, '', `/page/${pagenumber}/${pageTitle.audio}`);
                             }} />
