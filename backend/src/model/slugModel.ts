@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const schema = new Schema({
-    slug: { type: String, required: true },
+    page: { type: String, required: true },
     title: { type: String, required: true },
 });
 
