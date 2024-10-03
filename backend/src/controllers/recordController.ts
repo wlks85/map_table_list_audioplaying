@@ -33,7 +33,7 @@ export const pagetitleController = async (req: Request, res: Response) => {
         const records = await recordModel.find({ page: pageNumber }).sort({ word: 1 });
         const uniqueRecords = Array.from(new Map(records.map(item => [item.variant, item])).values());
         res.status(200).json({
-            data: uniqueRecords,
+            data: records,
         });
 
 
