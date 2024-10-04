@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategory, getColor, getTextColor, setCategory, setTextColor, submitColor } from "../redux/themeSlice";
 
 const colors: string[] = [
-    'magenta', '#ffdd62', '#e11325', '#71cdf1', '#f08757', '#f08757', '#0a998a', 'blue', 'purple', 'pink', 'brown'
+    'magenta', '#ffdd62', '#e11325', '#71cdf1', '#f08757', '#0a998a', '#0a998a', 'blue', 'purple', 'pink', 'brown'
 ];
 
 const textColors: string[] = [
