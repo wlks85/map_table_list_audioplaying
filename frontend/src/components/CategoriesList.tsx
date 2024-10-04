@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategory, getColor, getTextColor, setCategory, setTextColor, submitColor } from "../redux/themeSlice";
 
 const colors: string[] = [
-    'magenta', '#ffdd62', '#e11325', '#71cdf1', '#f08757', '#f08757', 'blue', 'purple', 'pink', 'brown'
+    'magenta', '#ffdd62', '#e11325', '#71cdf1', '#f08757', '#f08757', '#0a998a', 'blue', 'purple', 'pink', 'brown'
 ];
 
 const textColors: string[] = [
-    'normal', '#8d8070', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'
+    'normal', '#8d8070', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff', '#ffffff'
 ]
 
 const CategoriesList: React.FC = (props: any) => {
@@ -23,7 +23,7 @@ const CategoriesList: React.FC = (props: any) => {
     const [uniqueData, setUniqueData] = useState<any[]>([])
 
     useEffect(() => {
-        if(props.category) setIsOpen(false);
+        if (props.category) setIsOpen(false);
         dispatch(getColor());
         dispatch(getTextColor());
         dispatch(getCategory());
@@ -102,6 +102,10 @@ const CategoriesList: React.FC = (props: any) => {
                                 else if (Number(item.page) <= 358) {
                                     color = colors[4];
                                     textColor = textColors[4];
+                                }
+                                else {
+                                    color = colors[5];
+                                    textColor = textColors[5];
                                 }
                                 if (item.Maincategory) return (
                                     <div
