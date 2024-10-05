@@ -26,18 +26,18 @@ const CategoriesList: React.FC = (props: any) => {
         if (props.category) setIsOpen(false);
         dispatch(getColor());
         dispatch(getTextColor());
-        dispatch(getCategory());
-
+        //dispatch(getCategory());
+        setSelectedCategory(props.category);
         CategoriesServices.getCategories()
             .then((data) => {
                 setUniqueData(Array.from(new Map(data.map((item: any) => [item.Maincategory, item])).values()))
             })
             .catch(() => alert("Error fetching"));
-    }, []);
+    }, [props.category]);
 
-    useEffect(() => {
-        setSelectedCategory(data.category)
-    }, [data.category])
+    // useEffect(() => {
+    //     setSelectedCategory(data.category)
+    // }, [data.category])
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -125,7 +125,7 @@ const CategoriesList: React.FC = (props: any) => {
                 )}
             </div>
             {/* Sub-categories list  */}
-            <div className="text-charcoal">
+            <div className={`text-charcoal`}>
                 <SubCategoriesList selectedCategory={selectedCategory} />
             </div>
         </div >

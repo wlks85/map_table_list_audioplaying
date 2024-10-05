@@ -16,7 +16,7 @@ interface SubCategoriesListProps {
     selectedCategory: string;
 }
 
-const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory }) => {
+const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory}) => {
     const [categories, setCategories] = useState<Categories[]>([]);
     const [subcategory, setSubcategory] = useState<string>('Genuss');
     const [pageTitle, setPageTitle] = useState<Array<any>>([])
@@ -47,6 +47,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
         let pt = Array.from(new Map(uniquePageTitle.map(item => [item.Pagetitle, item])).values());
         setPageTitle(pt);
     }, [
+        categories,
         subcategory
     ])
 
