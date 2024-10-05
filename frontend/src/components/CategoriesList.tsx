@@ -26,7 +26,6 @@ const CategoriesList: React.FC = (props: any) => {
         if (props.category) setIsOpen(false);
         dispatch(getColor());
         dispatch(getTextColor());
-        //dispatch(getCategory());
         setSelectedCategory(props.category);
         CategoriesServices.getCategories()
             .then((data) => {

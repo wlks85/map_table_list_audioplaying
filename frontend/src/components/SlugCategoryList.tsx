@@ -5,7 +5,7 @@ import leftarrow from '../assets/left-arrow.svg';
 import playIcon from '../assets/play-icon.svg';
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getColor } from "../redux/themeSlice";
+import { getColor, setCategory } from "../redux/themeSlice";
 import { SlugService } from "../services/SlugService";
 
 interface PageTitle {
@@ -88,6 +88,7 @@ const SlugCategoryList: React.FC = () => {
             setPagenumber(Number(data?.Pagenumber))
             setSubcategory(data?.Subcategory)
             setMaincategory(data?.Maincategory)
+            dispatch(setCategory(data?.Maincategory))
             CategoriesServices.getPageTitle(data?.Pagenumber)
                 .then((res) => {
                     setPageTitleData(res.data)
@@ -152,7 +153,9 @@ const SlugCategoryList: React.FC = () => {
                     <div
                         style={{ backgroundColor: data?.color }}
                         className={`inline-flex justify-between items-center w-full px-4 py-4 bg-[${data?.color}]  text-lg font-bold text-gray-700 focus:outline-none`}>
-                        <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() => navigate(-1)} />
+                        <img className="h-6 w-6 text-gray-700 cursor-pointer" src={leftarrow} alt="Left Arrow" onClick={() =>{
+                            navigate(`/${subcategory}/${pagenumber}`);
+                        }} />
                         <div className="flex-grow text-center text-xl">
                             {pageTitleData[0]?.word}
                         </div>

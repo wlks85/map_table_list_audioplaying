@@ -56,8 +56,6 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory}
         localStorage.setItem('sub_category', subcategory);
     };
 
-
-
     return (
         <div >
             <div className="bg-gray-200 py-4 px-2 mt-14">
