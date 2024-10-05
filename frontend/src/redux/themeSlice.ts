@@ -36,8 +36,8 @@ export const getTextColor = createAsyncThunk("appTheme/getTextColor", async () =
 });
 
 export const setTextColor = createAsyncThunk("appTheme/setTextColor", async (textColor: string) => {
-    localStorage.setItem('textColor', textColor);
-    return { textColor };
+  localStorage.setItem('textColor', textColor);
+  return { textColor };
 
 });
 
@@ -47,24 +47,40 @@ export const appTheme = createSlice({
     color: '#ffdd62',
     textColor: '#ffffff',
     category: 'Grammatik',
-    sub_category: ''
+    sub_category: '',
+    loading: false,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getCategory.pending, (state: any, action: any) => {
+        state.loading = true;
+        if (action?.payload?.category) state.category = action?.payload?.category;
+      })
       .addCase(getCategory.fulfilled, (state: any, action: any) => {
+        state.loading = false;
         if (action?.payload?.category) state.category = action?.payload?.category;
       })
       .addCase(setCategory.fulfilled, (state: any, action: any) => {
         state.category = action.payload.category;
       })
+      .addCase(getTextColor.pending, (state: any, action: any) => {
+        state.loading = true;
+        if (action?.payload?.textColor) state.textColor = action?.payload?.textColor;
+      })
       .addCase(getTextColor.fulfilled, (state: any, action: any) => {
+        state.loading = false;
         if (action?.payload?.textColor) state.textColor = action?.payload?.textColor;
       })
       .addCase(setTextColor.fulfilled, (state: any, action: any) => {
         state.textColor = action.payload.textColor;
       })
+      .addCase(getColor.pending, (state: any, action: any) => {
+        state.loading = true;
+        if (action?.payload?.color) state.color = action?.payload?.color;
+      })
       .addCase(getColor.fulfilled, (state: any, action: any) => {
+        state.loading = false;
         if (action?.payload?.color) state.color = action?.payload?.color;
       })
       .addCase(setColor.fulfilled, (state: any, action: any) => {

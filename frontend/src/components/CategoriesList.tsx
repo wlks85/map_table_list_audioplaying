@@ -19,7 +19,7 @@ const CategoriesList: React.FC = (props: any) => {
     const navigate = useNavigate();
     const data = useSelector((state: any) => state.theme);
     const [isOpen, setIsOpen] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState<string>('Grammatik');
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [uniqueData, setUniqueData] = useState<any[]>([])
 
     useEffect(() => {

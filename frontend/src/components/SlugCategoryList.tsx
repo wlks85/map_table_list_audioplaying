@@ -37,7 +37,6 @@ const SlugCategoryList: React.FC = () => {
     const data = useSelector((state: any) => state.theme);
     const [pageTitleData, setPageTitleData] = useState<PageTitle[]>([]);
     const [audioName, setAudioName] = useState<string | null>(null);
-    const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [currentAudioId, setCurrentAudioId] = useState<number | null>(null);
@@ -46,9 +45,41 @@ const SlugCategoryList: React.FC = () => {
     const [pagenumber, setPagenumber] = useState(0);
     const [color, setColor] = useState('#ffdd62');
     const [textColor, setTextColor] = useState('#8d8070');
+    const [audio, setAudio] = useState<HTMLAudioElement>(new Audio(''));
 
     const [maincategory, setMaincategory] = useState('');
     const [subcategory, setSubcategory] = useState('');
+
+    useEffect(() => {
+        var ap = audio;
+        function loadeddata() {
+            ap.play();
+        }
+        function timeupdate() {
+            if (ap.duration)
+                setProgress((ap.currentTime / ap.duration) * 100);
+        }
+        function ended() {
+            setIsPlaying(false);
+            setProgress(0);
+            setCurrentAudioId(null);
+        }
+        function error() {
+            setIsPlaying(false);
+            setProgress(0);
+            setError('Failed to load audio');
+        }
+        ap.addEventListener('loadeddata', loadeddata);
+        ap.addEventListener('timeupdate', timeupdate);
+        ap.addEventListener('ended', ended);
+        ap.addEventListener('error', error);
+        return () => {
+            ap.removeEventListener('loadeddata', loadeddata);
+            ap.removeEventListener('timeupdate', timeupdate);
+            ap.removeEventListener('ended', ended);
+            ap.removeEventListener('error', error);
+        }
+    }, [])
 
     useEffect(() => {
         dispatch(getColor());
@@ -95,25 +126,8 @@ const SlugCategoryList: React.FC = () => {
             setProgress(0);
             try {
                 setIsPlaying(true);
-                var ap = new Audio('');
-                setAudio(ap);
+                var ap = audio;
                 ap.src = `https://audio.dialektatlas.ch/file/${audioName}.flac`
-                ap.addEventListener('loadeddata', () => {
-                    ap.play();
-                });
-                ap.addEventListener('timeupdate', () => {
-                    if (ap.duration)
-                        setProgress((ap.currentTime / ap.duration) * 100);
-                });
-                ap.addEventListener('ended', () => {
-                    setIsPlaying(false);
-                    setProgress(0);
-                    setCurrentAudioId(null);
-                });
-                ap.addEventListener('error', () => {
-                    setIsPlaying(false);
-                    setError('Failed to load audio');
-                });
                 ap.load()
                 setError('');
             } catch (error) {
