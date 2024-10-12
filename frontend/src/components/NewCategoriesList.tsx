@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import SubCategoriesList from "./SubCategoriesList";
-import downarrow from "../assets/down-arrow-svgrepo-com.svg";
+import { useNavigate, useParams } from "react-router-dom";
 import { CategoriesServices } from "../services/CategoriesServices";
-import { useNavigate } from "react-router-dom";
+import downarrow from "../assets/down-arrow-svgrepo-com.svg";
+import SubCategoriesList from "./SubCategoriesList";
 
-interface categories {
-    Maincategory: string;
-    Subcategory: string;
-}
+const NewCategoriesList: React.FC = () => {
+    const { categories } = useParams<{ categories: string }>();
 
-const CategoriesList: React.FC = () => {
-
-    const [categories, setCategories] = useState<categories[]>([]);
+    const [categoriesList, setCategoriesList] = useState<categories[]>([]);
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>('Grammatik');
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(categories);
     const navigate = useNavigate();
 
 
@@ -21,7 +17,7 @@ const CategoriesList: React.FC = () => {
         CategoriesServices.getCategories()
             .then((data) => {
                 // console.log("works", data);
-                setCategories(data);
+                setCategoriesList(data);
             })
             .catch(() => alert("Error fetching"));
     }, []);
@@ -33,19 +29,18 @@ const CategoriesList: React.FC = () => {
 
     const handleCategoryClick = (category: string) => {
         setSelectedCategory(category);
-        navigate(`/${category}`)
         setIsOpen(false);
+        navigate(`/${category}`)
     };
 
     const colors: string[] = [
-        'magenta','#ffdd62', '#e21327', '#71cff1', '#f78551', '#02998a', 'blue', 'purple', 'pink', 'brown' 
+        'magenta', '#ffdd62', '#e21327', '#71cff1', '#f78551', '#02998a', 'blue', 'purple', 'pink', 'brown'
     ];
 
 
-    const uniqueData = Array.from(new Map(categories.map(item => [item.Maincategory, item])).values())
-    // const uniqueData = categories.map(item =>)
-    console.log(uniqueData)
+    const uniqueData = Array.from(new Map(categoriesList.map(item => [item.Maincategory, item])).values())
 
+    // console.log(categories)
     return (
         <div className="">
             {/* <Dropdown uniqueData={uniqueData} /> */}
@@ -59,7 +54,7 @@ const CategoriesList: React.FC = () => {
 
                     >
                         <div className="flex-grow text-center">
-                            {selectedCategory || "Categories"}
+                            {categories || "Categories"}
                         </div>
                         <div>
                             <img className="h-6 w-6 text-gray-700 cursor-pointer" src={downarrow} alt="DownArrow" onClick={toggleDropdown} />
@@ -69,7 +64,7 @@ const CategoriesList: React.FC = () => {
 
                 {isOpen && (
                     <div
-                        className="origin-top-right z-50 absolute top-[-60px] w-full h-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        className="origin-top-right z-50 absolute top-0 w-full h-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="menu-button"
@@ -80,9 +75,9 @@ const CategoriesList: React.FC = () => {
                                     <div
                                         key={index}
                                         style={{ backgroundColor: colors[index % colors.length] }}
-                                        className={`text-xl font-bold ${item?.color ? `text-[${item.color}]` : `text-white`} ${item?.bg_color ? `bg-[${item.bg_color}]` : `bg-[${colors[index % colors.length]}]`} hover:text-black block px-4 py-16 cursor-pointer`}
+                                        className="text-xl font-bold text-white hover:text-black block px-4 py-16 cursor-pointer"
                                         role="menuitem"
-                                        onClick={() => handleCategoryClick(item?.Maincategory)}
+                                        onClick={() => handleCategoryClick(item.Maincategory)}
                                     >
                                         {item.Maincategory}
                                     </div>
@@ -100,4 +95,4 @@ const CategoriesList: React.FC = () => {
     )
 }
 
-export default CategoriesList
+export default NewCategoriesList

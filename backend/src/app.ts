@@ -6,7 +6,6 @@ import recordRoutes from './routes/recordRoutes';
 import categoryRoutes from './routes/categoryRoute';
 import audioRoute from './routes/audioRoutes';
 import variantRoute from './routes/variantRoute';
-import slugRoute from './routes/slugRoutes';
 
 
 
@@ -15,10 +14,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8001;
 
-
 app.use(cors());
 app.use(express.json());
-app.use('/file', express.static('src/audios'))
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI!, {
@@ -41,8 +38,6 @@ app.use('/api/v1/variant', variantRoute);
 
 // Audio File API 
 app.use("/api/v1/audios", audioRoute)
-
-app.use('/api/v1/slugs', slugRoute);
 
 
 

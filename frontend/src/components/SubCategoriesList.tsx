@@ -16,45 +16,37 @@ interface SubCategoriesListProps {
     selectedCategory: string;
 }
 
-const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory}) => {
+const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory }) => {
     const [categories, setCategories] = useState<Categories[]>([]);
     const [subcategory, setSubcategory] = useState<string>('Genuss');
-    const [pageTitle, setPageTitle] = useState<Array<any>>([])
-    const [uniqueData, setUniqueData] = useState<Array<any>>([])
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        let sub_category = localStorage.getItem('sub_category');
-        if (sub_category) {
-            setSubcategory(sub_category);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (selectedCategory != '')
-            CategoriesServices.getSubCategories(selectedCategory)
-                .then((data) => {
-                    setCategories(data);
-                    const uniqueData = Array.from(new Map(data.map(item => [item.Subcategory, item])).values());
-                    setUniqueData(uniqueData)
-                })
-                .catch(() => alert("Error fetching"));
+        CategoriesServices.getSubCategories(selectedCategory)
+            .then((data) => {
+                setCategories(data);
+                // console.log(data)
+            })
+            .catch(() => alert("Error fetching"));
     }, [selectedCategory]);
 
-    useEffect(() => {
-        const uniquePageTitle = categories.filter(item => item.Subcategory === subcategory);
-        uniquePageTitle.sort((a, b) => a.Pagetitle.localeCompare(b.Pagetitle));
-        let pt = Array.from(new Map(uniquePageTitle.map(item => [item.Pagetitle, item])).values());
-        setPageTitle(pt);
-    }, [
-        categories,
-        subcategory
-    ])
-
     const handleButtonClick = (subcategory: string) => {
+
         setSubcategory(subcategory);
-        localStorage.setItem('sub_category', subcategory);
+        // console.log(activeIndex, index)
     };
+
+    // const filterByCategory = (category: string): Categories[] => {
+    //     return categories.filter(item => item.Maincategory === category);
+    // };
+
+    // const selectedData = filterByCategory(selectedCategory);
+    const uniqueData = Array.from(new Map(categories.map(item => [item.Subcategory, item])).values());
+    const uniquePageTitle = categories.filter(item => item.Subcategory === subcategory);
+    uniquePageTitle.sort((a, b) => a.Pagetitle.localeCompare(b.Pagetitle));
+
+    const pageTitle = Array.from(new Map(uniquePageTitle.map(item=> [item.Pagetitle, item])).values());
 
     return (
         <div >

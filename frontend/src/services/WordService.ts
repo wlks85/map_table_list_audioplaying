@@ -2,7 +2,7 @@
 // const env = import.meta.env;
 // const host: string = env.VITE_API_ROOT || "localhost";
 // const port: string = env.VITE_NODE_ENV === "local" ? ":8000" : "";
-// const scheme: string = env.VITE_NODE_ENV === "local" ? "http" : "https";
+// const scheme: string = env.VITE_NODE_ENV === "local" ? "http" : "s";
 // const BASE_URL = `${scheme}://${host}${port}/api/v1`;
 
 // export const WordService = {
