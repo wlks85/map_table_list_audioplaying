@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { CategoriesServices } from "../services/CategoriesServices";
+import { Navigation, Pagination, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { useNavigate, useParams } from "react-router-dom";
+import 'swiper/css/scrollbar';
+import { useNavigate } from "react-router-dom";
+import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "lucide-react";
 
 interface Categories {
     Maincategory: string;
@@ -16,7 +20,7 @@ interface SubCategoriesListProps {
     selectedCategory: string;
 }
 
-const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory}) => {
+const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory }) => {
     const [categories, setCategories] = useState<Categories[]>([]);
     const [subcategory, setSubcategory] = useState<string>('Genuss');
     const [pageTitle, setPageTitle] = useState<Array<any>>([])
@@ -58,11 +62,25 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory}
 
     return (
         <div >
-            <div className="bg-gray-200 py-4 px-2 mt-14">
+            <div className="bg-gray-200 py-4 px-2 mt-14 flex" style={{
+                justifyContent: "space-between",
+                gap: 2,
+                alignItems: "center"
+            }}>
+                <div className="swiper-button image-swiper-button-prev">
+                    <ArrowLeftCircleIcon />
+                </div>
                 <Swiper
+                    modules={[Navigation, Pagination, A11y]}
                     slidesPerView={3}
                     spaceBetween={10}
                     className="mySwiper "
+                    navigation={{
+                        nextEl: ".image-swiper-button-next",
+                        prevEl: ".image-swiper-button-prev",
+                        disabledClass: "swiper-button-disabled"
+                    }}
+                // pagination={{ clickable: true }}
                 >
                     {uniqueData.map((button, index) => (
                         <SwiperSlide key={index}>
@@ -75,6 +93,9 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory}
                         </SwiperSlide>
                     ))}
                 </Swiper>
+                <div className="swiper-button image-swiper-button-next">
+                    <ArrowRightCircleIcon />
+                </div>
             </div>
 
             {pageTitle.map((pageTitle, index) => (
