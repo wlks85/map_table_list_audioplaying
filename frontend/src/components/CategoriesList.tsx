@@ -106,7 +106,7 @@ const CategoriesList: React.FC = (props: any) => {
 
                 {isOpen && (
                     <div
-                        className="origin-top-right z-50 absolute top-[-60px] w-full h-full bg-blend-normal rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        className="origin-top-right z-50 absolute  w-full h-full bg-blend-normal rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="menu-button"
