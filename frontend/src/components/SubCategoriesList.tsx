@@ -74,6 +74,9 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
                     modules={[Navigation, Pagination, A11y]}
                     slidesPerView={3}
                     spaceBetween={10}
+                    style={{
+                        flex: 1
+                    }}
                     className="mySwiper "
                     navigation={{
                         nextEl: ".image-swiper-button-next",

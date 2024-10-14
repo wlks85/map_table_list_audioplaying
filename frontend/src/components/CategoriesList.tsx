@@ -154,9 +154,10 @@ const CategoriesList: React.FC = (props: any) => {
                 )}
             </div>
             {/* Sub-categories list  */}
-            <div className={`text-charcoal`}>
+            {!isOpen && <div className={`text-charcoal`}>
                 <SubCategoriesList selectedCategory={selectedCategory} />
-            </div>
+            </div>}
+
         </div >
     )
 }

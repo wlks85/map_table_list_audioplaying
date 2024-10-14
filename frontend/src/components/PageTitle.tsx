@@ -188,14 +188,16 @@ const PageTitle: React.FC = () => {
                             <button className="whitespace-nowrap text-sm font-medium ring-offset-background  transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 text-primary-foreground px-4 py-2 w-12 h-12 rounded-full bg-[#777] hover:bg-[#eeeeee] focus:ring-2 focus:ring-offset-2 focus:ring-gray-100 flex items-center justify-center "
                                 aria-label={isPlaying ? 'Pause' : 'Play'}>
                                 {isPlaying && currentAudioId == pageTitle.ID ? (
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect x="6" y="4" width="4" height="16" fill="white" />
-                                        <rect x="14" y="4" width="4" height="16" fill="white" />
-                                    </svg>
+                                    // <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    //     <rect x="6" y="4" width="4" height="16" fill="white" />
+                                    //     <rect x="14" y="4" width="4" height="16" fill="white" />
+                                    // </svg>
+                                    <img src="/icons/pause.png" alt="play" />
                                 ) : (
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M8 5V19L19 12L8 5Z" fill="white" />
-                                    </svg>
+                                    // <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    //     <path d="M8 5V19L19 12L8 5Z" fill="white" />
+                                    // </svg>
+                                    <img src="/icons/play.png" alt="play" />
                                 )}
                             </button>
                             {/* <img className="h-10 w-10 text-gray-700 cursor-pointer" src={playIcon} alt="Play Button" onClick={(e) => {
