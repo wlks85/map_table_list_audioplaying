@@ -69,7 +69,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
                 alignItems: "center"
             }}>
                 <div className="swiper-button image-swiper-button-prev">
-                    <ArrowLeftCircleIcon />
+                <img src="/icons/left-arrow.png" alt="prev" width={20}/>
                 </div>
                 <Swiper
                     modules={[Navigation, Pagination, A11y]}
@@ -98,7 +98,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
                     ))}
                 </Swiper>
                 <div className="swiper-button image-swiper-button-next">
-                    <ArrowRightCircleIcon />
+                    <img src="/icons/right-arrow.png" alt="next" width={20}/>
                 </div>
             </div>
 

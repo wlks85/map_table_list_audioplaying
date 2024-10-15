@@ -195,7 +195,8 @@ const SlugCategoryList: React.FC = () => {
                                 {isPlaying && currentAudioId == pageTitle.ID ? (
                                     <img src="/icons/pause.png" alt="pause" />
                                 ) : (
-                                    <img src="/icons/right-arrow.png" alt="play" />
+                                    <img src="/icons/play.png" alt="play" />
+
                                 )}
                             </button>
 
