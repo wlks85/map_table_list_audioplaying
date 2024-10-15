@@ -7,7 +7,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { useNavigate } from "react-router-dom";
-import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "lucide-react";
+import { ArrowLeftCircleIcon, ArrowRight, ArrowRightCircle, ArrowRightCircleIcon, ArrowRightIcon, ArrowRightSquare } from "lucide-react";
+import { BiRightArrow } from "react-icons/bi";
 
 interface Categories {
     Maincategory: string;
