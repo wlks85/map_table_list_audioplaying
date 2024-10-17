@@ -89,7 +89,7 @@ const SlugCategoryList: React.FC = () => {
             dispatch(setCategory(data?.Maincategory))
             CategoriesServices.getPageTitle(data?.Pagenumber)
                 .then((res) => {
-                    setPageTitleData(res.data)
+                    setPageTitleData(res.data.filter(item=>item.word == slug?.split('_')[1]))
 
                     if (Number(data.Pagenumber) <= 142) {
                         setColor(colors[1]);
