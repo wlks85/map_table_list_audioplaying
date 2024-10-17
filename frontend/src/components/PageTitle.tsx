@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { CategoriesServices } from "../services/CategoriesServices";
 import leftarrow from '../assets/left-arrow.svg';
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,12 @@ interface PageTitle {
 
 const PageTitle: React.FC = () => {
     const { pagenumber, subcategory } = useParams<{ pagenumber: string }>();
+
+    const location = useLocation();
+    console.log(location);
+    // get userId
+    const title = location.state?.title;
+
     const [error, setError] = useState<string | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const dispatch = useDispatch<any>();
@@ -68,7 +74,7 @@ const PageTitle: React.FC = () => {
         dispatch(getCategory());
         CategoriesServices.getPageTitle(pagenumber)
             .then((data) => {
-                setPageTitleData(data.data)
+                setPageTitleData(data.data.filter(item => title ? item.word == title : true))
             })
             .catch(() => console.log("Error fetching"));
     }, [pagenumber]);
@@ -82,7 +88,7 @@ const PageTitle: React.FC = () => {
                 setIsPlaying(false);
                 return
             }
-            if (ap.currentTime != 0 && ap.currentTime < ap.duration && ap.paused && audioName_==audioName) {
+            if (ap.currentTime != 0 && ap.currentTime < ap.duration && ap.paused && audioName_ == audioName) {
                 ap.play();
                 setIsPlaying(true);
                 return
@@ -166,7 +172,7 @@ const PageTitle: React.FC = () => {
                             navigate(`/${data.category}`)
                         }} />
                         <div className="flex-grow text-center text-xl">
-                            {pageTitleData[0]?.word}
+                            {title?title: pageTitleData[0]?.word}
                         </div>
                     </div>
                 </div>

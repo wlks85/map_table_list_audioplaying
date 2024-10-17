@@ -69,7 +69,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
                 alignItems: "center"
             }}>
                 <div className="swiper-button image-swiper-button-prev">
-                <img src="/icons/left-arrow.png" alt="prev" width={20}/>
+                    <img src="/icons/left-arrow.png" alt="prev" width={20} />
                 </div>
                 <Swiper
                     modules={[Navigation, Pagination, A11y]}
@@ -98,7 +98,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
                     ))}
                 </Swiper>
                 <div className="swiper-button image-swiper-button-next">
-                    <img src="/icons/right-arrow.png" alt="next" width={20}/>
+                    <img src="/icons/right-arrow.png" alt="next" width={20} />
                 </div>
             </div>
 
@@ -106,7 +106,7 @@ const SubCategoriesList: React.FC<SubCategoriesListProps> = ({ selectedCategory 
                 <div
                     className="flex items-center justify-between text-xl font-extrabold py-4 px-3 m-2 border-b-2 shadow-sm cursor-pointer"
                     key={index}
-                    onClick={() => navigate(`/${subcategory}/${pageTitle?.Pagenumber}`)}
+                    onClick={() => navigate(`/${subcategory}/${pageTitle?.Pagenumber}`, { state: { title: pageTitle.Pagetitle } })}
                 >
                     <span className="font-extrabold">{pageTitle.Pagetitle}</span>
                     <svg className="w-4 h-4 ml-2 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
