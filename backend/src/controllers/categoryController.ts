@@ -5,6 +5,7 @@ import categoryModel from '../model/categoryModel';
 
 export const uploadCategoryCsv = async (req: Request, res: Response) => {
     try {
+        await categoryModel.deleteMany({})
         const records = await csvToJson(req.file.path);
         // console.log(records);
         await categoryModel.insertMany(records);
@@ -32,11 +33,11 @@ export const getNextPage = async (req: Request, res: Response) => {
         }
 
         const record = await categoryModel.aggregate([
-            {
-                $match: {
-                    Subcategory: subcategory
-                }
-            },
+            // {
+            //     $match: {
+            //         Subcategory: subcategory
+            //     }
+            // },
             {
                 $addFields: {
                     pageNum: { $toInt: "$page" }  // Convert page string to integer

@@ -4,6 +4,7 @@ import slugModel from "../model/slugModel";
 import categoryModel from "../model/categoryModel";
 export const uploadCsv = async (req: Request, res: Response) => {
   try {
+    await slugModel.deleteMany({})
     const slugs = await csvToJson(req.file.path);
     // console.log(records);
     await slugModel.insertMany(slugs);

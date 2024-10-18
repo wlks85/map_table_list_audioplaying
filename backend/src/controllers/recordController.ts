@@ -5,6 +5,8 @@ import recordModel from '../model/recordModel';
 
 export const uploadCsv = async (req: Request, res: Response) => {
     try {
+        await recordModel.deleteMany({})
+
         const records = await csvToJson(req.file.path);
         // console.log(records);
         await recordModel.insertMany(records);
