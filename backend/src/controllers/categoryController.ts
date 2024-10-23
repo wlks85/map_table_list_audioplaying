@@ -33,11 +33,11 @@ export const getNextPage = async (req: Request, res: Response) => {
         }
 
         const record = await categoryModel.aggregate([
-            // {
-            //     $match: {
-            //         Subcategory: subcategory
-            //     }
-            // },
+            {
+                $match: {
+                    Subcategory: subcategory
+                }
+            },
             {
                 $addFields: {
                     pageNum: { $toInt: "$page" }  // Convert page string to integer
