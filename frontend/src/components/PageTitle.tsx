@@ -19,6 +19,15 @@ interface PageTitle {
     audio: string;
 }
 
+const customSort = (a: any, b: any) => {
+    if (a.variant === b.variant) {
+        if (a.cohort === 'alt') return -1;
+        if (b.cohort === 'alt') return 1;
+        return 0;
+    }
+    return a.variant.localeCompare(b.variant, 'de', { sensitivity: 'variant' });
+};
+
 const PageTitle: React.FC = () => {
     const { pagenumber, subcategory } = useParams<{ pagenumber: string }>();
 
@@ -74,7 +83,8 @@ const PageTitle: React.FC = () => {
         dispatch(getCategory());
         CategoriesServices.getPageTitle(pagenumber)
             .then((data) => {
-                setPageTitleData(data.data.filter(item => title ? item.word == title : true))
+                setPageTitleData(data.data.filter(item => title ? item.word == title : true).sort(customSort))
+                
             })
             .catch(() => console.log("Error fetching"));
     }, [pagenumber]);
@@ -252,8 +262,8 @@ const PageTitle: React.FC = () => {
                             })
                         }
 
-                        } className="cursor-pointer">
-                            Vorherige Seite
+                        } className="cursor-pointer text-[16px]">
+                            &laquo;
                         </button>
                         <div>
                             {pagenumber}
@@ -266,8 +276,8 @@ const PageTitle: React.FC = () => {
                                 }
                                 navigate(`/${subcategory}/${parseInt(data.page)}`)
                             })
-                        }} className="cursor-pointer">
-                            Nächste Seite
+                        }} className="cursor-pointer text-[16px]">
+                            &raquo;
                         </button>
                     </div>
                 </div>

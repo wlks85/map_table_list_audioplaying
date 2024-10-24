@@ -33,6 +33,7 @@ const Dropdown: React.FC = ({uniqueData}) => {
           onClick={toggleDropdown}
         >
           {selectedCategory || "Categories"}
+          <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g data-name="Layer 2"> <g data-name="info"> <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"></rect> <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path> <circle cx="12" cy="8" r="1"></circle> <path d="M12 10a1 1 0 0 0-1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0-1-1z"></path> </g> </g> </g></svg>
           <svg
             className="-mr-1 ml-2 h-6 w-6 bg-gray-950 text-yellow-400 rounded-2xl"
             xmlns="http://www.w3.org/2000/svg"
