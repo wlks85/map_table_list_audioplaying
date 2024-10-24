@@ -35,9 +35,15 @@ export const pagetitleController = async (req: Request, res: Response) => {
         const pageNumber = parseInt(req.query.pageNumber as string);
 
         const records = await recordModel.find({ page: pageNumber }).sort({ word: 1 });
-        records.sort((a: any, b: any) => a.variant.localeCompare(b.variant, 'de', { sensitivity: 'variant' }))
-        console.log(records)
-        const uniqueRecords = Array.from(new Map(records.map(item => [item.variant, item])).values());
+        const customSort = (a: any, b: any) => {
+            if (a.variant === b.variant) {
+                if (a.cohort === 'alt') return -1;
+                if (b.cohort === 'alt') return 1;
+                return 0;
+            }
+            return a.variant.localeCompare(b.variant, 'de', { sensitivity: 'variant' });
+        };
+        records.sort(customSort);
         res.status(200).json({
             data: records,
         });
