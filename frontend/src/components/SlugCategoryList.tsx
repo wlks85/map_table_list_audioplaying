@@ -233,7 +233,7 @@ const SlugCategoryList: React.FC = () => {
                         }
 
                         } className="cursor-pointer">
-                            Vorherige Seite
+                            &laquo;
                         </button>
                         <div>
                             {pagenumber}
@@ -246,8 +246,8 @@ const SlugCategoryList: React.FC = () => {
                                 }
                                 navigate(`/${subcategory}/${parseInt(data.page)}`)
                             })
-                        }} className="cursor-pointer">
-                            Nächste Seite
+                        }} className="cursor-pointer text-[16px]">
+                            &raquo;
                         </button>
                     </div>
 
